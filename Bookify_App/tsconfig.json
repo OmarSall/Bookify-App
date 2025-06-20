@@ -3,6 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
@@ -11,6 +12,6 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "src", "src/global.d.ts"],
   "exclude": ["node_modules"]
 }

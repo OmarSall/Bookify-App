@@ -1,0 +1,19 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navLinks {
+    display: flex;
+    gap: 1rem;
+}
