@@ -1,0 +1,9 @@
+.sidebar {
+    padding: 1rem;
+    border-right: 1px solid #ddd;
+    min-width: 220px;
+}
+
+.title {
+    margin-bottom: 1rem;
+}

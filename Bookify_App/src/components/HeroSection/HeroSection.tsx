@@ -1,51 +1,101 @@
 import styles from "./HeroSection.module.css";
-import { Box, Typography, TextField, Button, Grid } from "@mui/material";
-import { ReactComponent as TreeWithCouple } from "../../assets/treeWithCouple.svg";
-import { ReactComponent as UpperOrnament } from "../../assets/UpperOrnament.svg";
+import {Box, Typography, Button} from "@mui/material";
+import TreeWithCouple from "../../assets/treeWithCouple.svg?react";
+import UpperOrnament from "../../assets/UpperOrnament.svg?react";
+import CustomInput from "../CustomInput";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CelebrationIcon from "@mui/icons-material/Celebration";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import GroupIcon from "@mui/icons-material/Group";
+import SearchIcon from "@mui/icons-material/Search";
+import {InputAdornment} from "@mui/material";
 
 const HeroSection = () => {
     return (
         <Box className={styles.hero}>
-            <UpperOrnament className={styles.ornament} />
+            <UpperOrnament className={styles.ornament}/>
+            <TreeWithCouple className={styles.illustration}/>
 
-            <Grid container spacing={4} alignItems="center" className={styles.content}>
-                <Grid item xs={12} md={4}>
-                    <TreeWithCouple className={styles.illustration} />
-                </Grid>
+            <Box className={styles.content}>
+                <div className={styles.heading}>
+                    Find your place and experience it together.
+                </div>
 
-                <Grid item xs={12} md={8}>
-                    <Typography variant="h4" className={styles.heading}>
-                        Find your place and experience it together.
-                    </Typography>
+                <Box className={styles.inputGroup}>
+                    <CustomInput
+                        name="localization"
+                        placeholder="localization"
+                        className={styles.input}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <LocationOnIcon sx={{fontSize: 18, color: "#666"}}/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
 
-                    <Grid container spacing={2} className={styles.form}>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth placeholder="localization" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth placeholder="occasion" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth placeholder="date" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth placeholder="guests" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth placeholder="venue type" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Button fullWidth variant="contained" className={styles.searchBtn}>
-                                Search for venue
-                            </Button>
-                        </Grid>
-                    </Grid>
+                    <CustomInput
+                        name="occasion"
+                        placeholder="occasion"
+                        className={styles.input}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <CelebrationIcon sx={{fontSize: 18, color: "#666"}}/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
 
-                    <Typography className={styles.subtle}>
-                        I don't want to be that specific
-                    </Typography>
-                </Grid>
-            </Grid>
+                    <CustomInput
+                        name="date"
+                        placeholder="date"
+                        className={styles.input}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <CalendarTodayIcon sx={{fontSize: 18, color: "#666"}}/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <CustomInput
+                        name="guests"
+                        placeholder="guests"
+                        className={styles.input}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <GroupIcon sx={{fontSize: 18, color: "#666"}}/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <CustomInput
+                        name="venue"
+                        placeholder="venue type"
+                        className={styles.input}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon sx={{fontSize: 18, color: "#666"}}/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
+
+                <Typography className={styles.subtle}>
+                    I don't want to be that specific
+                </Typography>
+
+                <Button variant="contained" className={styles.searchBtn}>
+                    Search for venue
+                </Button>
+            </Box>
         </Box>
     );
 };

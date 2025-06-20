@@ -1,0 +1,12 @@
+.sortBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
