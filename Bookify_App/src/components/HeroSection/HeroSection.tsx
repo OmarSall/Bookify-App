@@ -9,6 +9,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GroupIcon from "@mui/icons-material/Group";
 import SearchIcon from "@mui/icons-material/Search";
 import {InputAdornment} from "@mui/material";
+import GuestsInput from "./GuestInput";
 
 const HeroSection = () => {
     return (
@@ -60,19 +61,19 @@ const HeroSection = () => {
                             ),
                         }}
                     />
-
-                    <CustomInput
-                        name="guests"
-                        placeholder="guests"
-                        className={styles.input}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <GroupIcon sx={{fontSize: 18, color: "#666"}}/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                    <GuestsInput />
+                    {/*<CustomInput*/}
+                    {/*    name="guests"*/}
+                    {/*    placeholder="guests"*/}
+                    {/*    className={styles.input}*/}
+                    {/*    InputProps={{*/}
+                    {/*        startAdornment: (*/}
+                    {/*            <InputAdornment position="start">*/}
+                    {/*                <GroupIcon sx={{fontSize: 18, color: "#666"}}/>*/}
+                    {/*            </InputAdornment>*/}
+                    {/*        ),*/}
+                    {/*    }}*/}
+                    {/*/>*/}
 
                     <CustomInput
                         name="venue"
