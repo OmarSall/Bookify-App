@@ -1,0 +1,46 @@
+.hero {
+    position: relative;
+    background: linear-gradient(to right, #f0f9ff, #e0f7f4);
+    padding: 4rem 2rem 2rem;
+    overflow: hidden;
+}
+
+.ornament {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+.heading {
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.illustration {
+    max-width: 100%;
+    height: auto;
+}
+
+.form {
+    margin-top: 2rem;
+}
+
+.searchBtn {
+    height: 100%;
+    font-weight: bold;
+}
+
+.subtle {
+    color: #4caf81;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-align: center;
+}
