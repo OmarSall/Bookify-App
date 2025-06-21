@@ -1,12 +1,15 @@
+import { useState } from "react";
 import styles from "./HomePage.module.css";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
 import SortBar from "../../components/SortBar/SortBar";
 import VenueCard from "../../components/VenueCard/VenueCard";
-
-import { Box, Grid, Pagination } from "@mui/material";
+import CustomPagination from "../../components/CustomPagination/CustomPagination";
+import { Box, Grid } from "@mui/material";
 
 const HomePage = () => {
+    const [page, setPage] = useState<number>(1);
+
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.container}>
@@ -37,11 +40,10 @@ const HomePage = () => {
                                 </Grid>
 
                                 <Box className={styles.paginationWrapper}>
-                                    <Pagination
-                                        count={12}
-                                        page={3}
-                                        shape="circular"
-                                        className="customPagination"
+                                    <CustomPagination
+                                        totalPages={12}
+                                        currentPage={page}
+                                        onPageChange={(newPage: number) => setPage(newPage)}
                                     />
                                 </Box>
                             </div>
