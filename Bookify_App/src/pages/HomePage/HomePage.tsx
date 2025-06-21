@@ -1,14 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.css";
+
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
 import SortBar from "../../components/SortBar/SortBar";
 import VenueCard from "../../components/VenueCard/VenueCard";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
+
 import { Box, Grid } from "@mui/material";
+import useVenues from "../../customHooks/useVenues";
 
 const HomePage = () => {
     const [page, setPage] = useState<number>(1);
+    const navigate = useNavigate();
+    const { venues, loading, error } = useVenues();
+
+    const venuesPerPage = 12;
+    const paginatedVenues = venues.slice((page - 1) * venuesPerPage, page * venuesPerPage);
+
+    const handleCardClick = (venueId: number) => {
+        navigate(`/venue/${venueId}`);
+    };
 
     return (
         <div className={styles.pageWrapper}>
@@ -25,27 +38,34 @@ const HomePage = () => {
                             <div className={styles.resultsArea}>
                                 <SortBar />
 
-                                <Grid container spacing={2} className={styles.venueGrid}>
-                                    {Array.from({ length: 12 }).map((_, idx) => (
-                                        <Grid item xs={12} sm={6} md={4} key={idx} {...({} as any)}>
-                                            <VenueCard
-                                                title="Enchanted Hut"
-                                                location="Zakopane, Poland"
-                                                rating={4.8}
-                                                capacity={4}
-                                                imageUrl="https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
-                                            />
+                                {loading && <p>Loading venues...</p>}
+                                {error && <p>{error}</p>}
+                                {!loading && !error && (
+                                    <>
+                                        <Grid container spacing={2} className={styles.venueGrid}>
+                                            {paginatedVenues.map((venue) => (
+                                                <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
+                                                    <VenueCard
+                                                        title={venue.name}
+                                                        location={venue.location.name}
+                                                        rating={venue.rating}
+                                                        capacity={venue.capacity}
+                                                        imageUrl={`https://picsum.photos/seed/${venue.albumId}/400/300`}
+                                                        onClick={() => handleCardClick(venue.id)}
+                                                    />
+                                                </Grid>
+                                            ))}
                                         </Grid>
-                                    ))}
-                                </Grid>
 
-                                <Box className={styles.paginationWrapper}>
-                                    <CustomPagination
-                                        totalPages={12}
-                                        currentPage={page}
-                                        onPageChange={(newPage: number) => setPage(newPage)}
-                                    />
-                                </Box>
+                                        <Box className={styles.paginationWrapper}>
+                                            <CustomPagination
+                                                totalPages={Math.ceil(venues.length / venuesPerPage)}
+                                                currentPage={page}
+                                                onPageChange={(newPage: number) => setPage(newPage)}
+                                            />
+                                        </Box>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </Box>

@@ -10,11 +10,12 @@ type VenueCardProps = {
     rating: number;
     capacity: number;
     imageUrl: string;
+    onClick?: () => void;
 };
 
-const VenueCard = ({ title, location, rating, capacity, imageUrl }: VenueCardProps) => {
+const VenueCard = ({ title, location, rating, capacity, imageUrl, onClick }: VenueCardProps) => {
     return (
-        <Card className={styles.card}>
+        <Card className={styles.card} onClick={onClick}>
             <CardMedia
                 component="img"
                 image={imageUrl}

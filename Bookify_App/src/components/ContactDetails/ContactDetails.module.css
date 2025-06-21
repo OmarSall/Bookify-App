@@ -1,0 +1,21 @@
+.contact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-family: "Prompt", sans-serif;
+}
+
+.avatar {
+    width: 56px;
+    height: 56px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}

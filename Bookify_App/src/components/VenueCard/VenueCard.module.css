@@ -1,33 +1,8 @@
 .card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
 }
 
 .card:hover {
-    transform: scale(1.02);
-}
-
-.image {
-    height: 180px;
-    object-fit: cover;
-}
-
-.title {
-    font-weight: 600;
-    margin-top: 0.5rem;
-}
-
-.info {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-    align-items: center;
-}
-
-.infoItem {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
