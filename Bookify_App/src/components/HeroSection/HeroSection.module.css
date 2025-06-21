@@ -4,7 +4,7 @@
     width: 100%;
     height: 524px;
     margin: 0 auto;
-    background: linear-gradient(to bottom right, #f4fdfc, #e4f3f2);
+    background: linear-gradient(100deg, #fefaf7, #f9eef6, #f2f1fc, #e8f5fa, #e9f9f7);
     padding: 0;
     overflow: hidden;
 }

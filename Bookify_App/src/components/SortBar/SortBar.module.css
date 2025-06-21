@@ -6,7 +6,36 @@
     padding: 0 1rem;
 }
 
+/* Lewa część z show - liczba - on the page */
+.showCount {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Styl napisu "show", "on the page" */
+.label {
+    color: #444;
+    font-size: 0.9rem;
+}
+
+/* Liczba w ramce */
+.countBox {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #4caf50;
+    font-weight: 500;
+}
+
+/* Prawa część z przyciskami */
 .actions {
     display: flex;
     gap: 1rem;
+}
+
+.sortButton {
+    text-transform: lowercase;
+    font-size: 0.8rem;
 }

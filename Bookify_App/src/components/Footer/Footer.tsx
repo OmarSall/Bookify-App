@@ -1,22 +1,31 @@
 import styles from "./Footer.module.css";
 import { Link } from "react-router-dom";
+import { Facebook, Instagram, Twitter, Email } from "@mui/icons-material";
 
 const Footer = () => {
     return (
-      <footer className={styles.footer}>
-          <div className={styles.links}>
-              <Link to="/about">About us</Link>
-              <Link to="/favourites">Your favourites</Link>
-              <Link to="/start-hosting">Start hosting</Link>
-          </div>
-          <div className={styles.socials}>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
-          </div>
-          <p className={styles.copy}>© Bookify 2025</p>
-      </footer>
+        <footer className={styles.footerWrapper}>
+            <div className={styles.footerInner}>
+                <div className={styles.topLinks}>
+                    <Link to="/contact">contact</Link>
+                    <Link to="/assistance">assistance</Link>
+                    <Link to="/about">about us</Link>
+                </div>
+
+                <div className={styles.message}>
+                    <p>Feel free to contact us in case of any problems and doubts.</p>
+                    <p>We are there for you.</p>
+                </div>
+
+                <div className={styles.icons}>
+                    <Facebook />
+                    <Instagram />
+                    <Twitter />
+                    <Email />
+                </div>
+            </div>
+        </footer>
     );
-}
+};
 
 export default Footer;

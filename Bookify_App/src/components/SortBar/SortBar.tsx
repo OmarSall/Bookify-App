@@ -1,26 +1,24 @@
 import styles from "./SortBar.module.css";
-import { ToggleButton, ToggleButtonGroup, Button, Box } from "@mui/material";
-import ViewListIcon from "@mui/icons-material/ViewList";
-import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import { Box, Button, Typography } from "@mui/material";
 
 const SortBar = () => {
     return (
         <Box className={styles.sortBar}>
-            <ToggleButtonGroup exclusive>
-                <ToggleButton value="grid" disabled>
-                    <ViewModuleIcon />
-                </ToggleButton>
-                <ToggleButton value="list" disabled>
-                    <ViewListIcon />
-                </ToggleButton>
-            </ToggleButtonGroup>
+            {/* Show count */}
+            <div className={styles.showCount}>
+                <Typography variant="body2" className={styles.label}>
+                    show
+                </Typography>
+                <div className={styles.countBox}>18</div>
+                <Typography variant="body2" className={styles.label}>
+                    on the page
+                </Typography>
+            </div>
 
+            {/* Sort button */}
             <div className={styles.actions}>
-                <Button variant="outlined" disabled>
-                    Sort
-                </Button>
-                <Button variant="text" disabled>
-                    Reset
+                <Button variant="outlined" className={styles.sortButton}>
+                    sort
                 </Button>
             </div>
         </Box>

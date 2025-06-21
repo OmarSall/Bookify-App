@@ -23,9 +23,12 @@ const FilterSidebar = () => {
 
     return (
         <div className={styles.sidebar}>
-            <Typography variant="h6" className={styles.title}>
-                Filters
-            </Typography>
+            <div className={styles.header}>
+                <Typography variant="h6" className={styles.title}>
+                    Filters
+                </Typography>
+                <button className={styles.resetButton}>reset</button>
+            </div>
 
             <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>

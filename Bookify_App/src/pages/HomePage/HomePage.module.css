@@ -1,6 +1,11 @@
 .pageWrapper {
-    max-width: 1440px; /* dopasuj do width SVG */
+    max-width: 1440px;
     margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }
 
 .contentWrapper {
@@ -10,20 +15,24 @@
     padding: 0 24px;
 }
 
+.mainContent {
+    padding: 2rem;
+}
+
+.layout {
+    display: flex;
+    gap: 24px;
+}
+
+.sidebarArea {
+    flex: 0 0 250px;
+}
+
 .resultsArea {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-}
-
-.mainContent {
-    padding: 2rem;
 }
 
 .venueGrid {
@@ -34,4 +43,31 @@
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+    align-items: center;
+    padding-right: 13rem;
+}
+
+.customPagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.customPagination .MuiPaginationItem-root {
+    font-family: "Prompt", sans-serif;
+    color: rgba(98, 208, 17, 0.89) !important;
+    border-radius: 50% !important;
+    width: 32px;
+    height: 32px;
+    margin: 0 4px;
+    border: 1px solid transparent !important;
+}
+
+.customPagination .Mui-selected {
+    background-color: #62d011 !important;  /* zielone tło */
+    color: #ffffff !important;
+}
+
+.customPagination .MuiPaginationItem-ellipsis {
+    color: rgba(98, 208, 17, 0.89) !important;
 }

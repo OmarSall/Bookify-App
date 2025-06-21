@@ -4,6 +4,28 @@
     min-width: 220px;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(100deg, #fefaf7, #f9eef6, #f2f1fc, #e8f5fa, #e9f9f7);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #ddd;
+    margin: -1rem -1rem 1rem -1rem;
+}
+
 .title {
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    padding-left: 4rem;
+}
+
+.resetButton {
+    font-size: 0.85rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: lowercase;
+    padding-right: 1rem;
+    color: #4caf50;
 }
