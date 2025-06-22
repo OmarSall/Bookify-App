@@ -61,8 +61,7 @@ const HomePage = () => {
                                                         location={venue.location.name}
                                                         rating={venue.rating}
                                                         capacity={venue.capacity}
-                                                        imageUrl={`https://picsum.photos/seed/${venue.albumId}/400/300`}
-                                                        onClick={() => handleCardClick(venue.id)}
+                                                        images={[`https://picsum.photos/seed/${venue.albumId}a/400/300`, `https://picsum.photos/seed/${venue.albumId}b/400/300`]}                                                        onClick={() => handleCardClick(venue.id)}
                                                     />
                                                 </Grid>
                                             ))}

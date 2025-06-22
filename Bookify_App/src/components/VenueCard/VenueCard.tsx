@@ -12,7 +12,7 @@ type VenueCardProps = {
     price: number;
     rating: number;
     capacity: number;
-    imageUrl: string;
+    images: string[];
     onClick?: () => void;
 };
 
@@ -22,16 +22,34 @@ const VenueCard = ({
                        price,
                        rating,
                        capacity,
-                       imageUrl,
+                       images,
                        onClick,
                    }: VenueCardProps) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const [currentImage, setCurrentImage] = useState(0);
+
+    const handlePrev = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    };
+
+    const handleNext = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    };
 
     return (
         <div className={styles.card} onClick={onClick}>
             <div className={styles.imageWrapper}>
-                <img src={imageUrl} alt={title} className={styles.image} />
+                <img
+                    src={images[currentImage]}
+                    alt={title}
+                    className={styles.image}
+                />
 
+                <button className={styles.arrowLeft} onClick={handlePrev}>‹</button>
+                <button className={styles.arrowRight} onClick={handleNext}>›</button>
+                {/* Heart icon - top left */}
                 <div
                     className={styles.favoriteIcon}
                     onClick={(e) => {
@@ -46,12 +64,14 @@ const VenueCard = ({
                     )}
                 </div>
 
-                <div className={styles.nameBanner}>{title}</div>
+                {/* Title - top right */}
+                <div className={styles.titleBanner}>{title}</div>
 
+                {/* Bottom overlay */}
                 <div className={styles.bottomOverlay}>
-                    {price !== undefined && (
-                        <div className={styles.price}>{price.toFixed(0)} PLN / night</div>
-                    )}
+                    <div className={styles.price}>
+                        {price.toFixed(0)} zł / doba
+                    </div>
                     <div className={styles.location}>
                         <LocationOnIcon fontSize="small" />
                         {location}
@@ -59,6 +79,7 @@ const VenueCard = ({
                 </div>
             </div>
 
+            {/* Rating & Capacity */}
             <div className={styles.detailsBar}>
                 <div className={styles.detail}>
                     <StarIcon fontSize="small" />
