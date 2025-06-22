@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState, useMemo} from "react";
+import {useNavigate} from "react-router-dom";
 import styles from "./HomePage.module.css";
 
 import HeroSection from "../../components/HeroSection/HeroSection";
@@ -8,16 +8,18 @@ import SortBar from "../../components/SortBar/SortBar";
 import VenueCard from "../../components/VenueCard/VenueCard";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 
-import { Box, Grid } from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import useVenues from "../../customHooks/useVenues";
 
 const HomePage = () => {
     const [page, setPage] = useState<number>(1);
     const navigate = useNavigate();
-    const { venues, loading, error } = useVenues();
+    const {venues, availableFeatures, loading, error} = useVenues();
 
     const venuesPerPage = 12;
     const paginatedVenues = venues.slice((page - 1) * venuesPerPage, page * venuesPerPage);
+
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
 
     const handleCardClick = (venueId: number) => {
         navigate(`/venue/${venueId}`);
@@ -26,17 +28,23 @@ const HomePage = () => {
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.container}>
-                <HeroSection />
+                <HeroSection/>
 
                 <div className={styles.contentWrapper}>
                     <Box className={styles.mainContent}>
                         <div className={styles.layout}>
                             <aside className={styles.sidebarArea}>
-                                <FilterSidebar />
+                                {!loading && venues.length > 0 && (
+                                    <FilterSidebar
+                                        availableFeatures={availableFeatures}
+                                        priceRange={priceRange}
+                                        onPriceChange={(range) => setPriceRange([range[0], range[1]])}
+                                    />
+                                )}
                             </aside>
 
                             <div className={styles.resultsArea}>
-                                <SortBar />
+                                <SortBar/>
 
                                 {loading && <p>Loading venues...</p>}
                                 {error && <p>{error}</p>}

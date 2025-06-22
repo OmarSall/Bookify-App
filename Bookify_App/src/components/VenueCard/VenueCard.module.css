@@ -1,4 +1,6 @@
 .card {
+    width: 100%;
+    max-width: 300px;
     transition: box-shadow 0.3s;
     cursor: pointer;
 }

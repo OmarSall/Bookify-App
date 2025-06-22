@@ -1,31 +1,27 @@
 .sidebar {
+    width: 250px;
+    background-color: white;
     padding: 1rem;
-    border-right: 1px solid #ddd;
-    min-width: 220px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(100deg, #fefaf7, #f9eef6, #f2f1fc, #e8f5fa, #e9f9f7);
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #ddd;
-    margin: -1rem -1rem 1rem -1rem;
+    margin-bottom: 1rem;
 }
 
 .title {
+    font-weight: bold;
     font-size: 1rem;
-    font-weight: 500;
-    padding-left: 4rem;
 }
 
 .resetButton {
-    font-size: 0.85rem;
     background: none;
     border: none;
+    color: #63a69f;
+    font-weight: bold;
     cursor: pointer;
-    text-transform: lowercase;
-    padding-right: 1rem;
-    color: #4caf50;
 }

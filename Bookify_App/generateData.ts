@@ -12,6 +12,7 @@ type Venue = {
     capacity: number;
     name: string;
     albumId: number;
+    features: string[];
 };
 
 type VenueDetails = Venue & {
@@ -33,16 +34,23 @@ type VenueDetails = Venue & {
 };
 
 const featuresList = [
-    "kitchen facilities",
-    "bathroom facilities",
-    "fireplace",
-    "hypoallergenic bedding",
-    "speakers",
-    "TV",
-    "WiFi",
-    "pet friendly",
-    "parking",
-    "lake and mountains nearby",
+    // Amenities
+    "WiFi", "restaurant", "bar", "pool", "jacuzzi", "garden", "fitness centre",
+    "playground", "24h reception", "speakers", "outdoor music", "indoor music", "karaoke", "parking",
+
+    // Room amenities
+    "kitchen facilities", "bathroom facilities", "hypoallergenic bedding", "air conditioning",
+    "TV", "safe", "pet friendly",
+
+    // Neighbourhood
+    "lake", "forest", "mountains", "sea", "national park", "river", "park", "mall", "zoo",
+    "church", "old town", "historical monument", "museum", "theatre", "cinema", "amusement park",
+
+    // Handicap accessibility
+    "wheelchair friendly", "blind friendly", "deaf friendly", "short-grown friendly",
+
+    // Other
+    "fireplace", "library"
 ];
 
 function generateVenues(count: number): { venues: Venue[]; venuesDetails: VenueDetails[] } {
@@ -69,6 +77,7 @@ function generateVenues(count: number): { venues: Venue[]; venuesDetails: VenueD
             capacity,
             name,
             albumId,
+            features: faker.helpers.arrayElements(featuresList, faker.number.int({ min: 3, max: 7 })),
         };
 
         const venueDetails: VenueDetails = {
