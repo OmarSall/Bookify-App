@@ -1,4 +1,4 @@
-import {useState, useMemo} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styles from "./HomePage.module.css";
 
@@ -10,8 +10,10 @@ import CustomPagination from "../../components/CustomPagination/CustomPagination
 
 import {Box, Grid} from "@mui/material";
 import useVenues from "../../customHooks/useVenues";
+import useCurrencyRate from "../../customHooks/useCurrencyRate";
 
 const HomePage = () => {
+    const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
     const [page, setPage] = useState<number>(1);
     const navigate = useNavigate();
     const {venues, availableFeatures, loading, error} = useVenues();
@@ -48,13 +50,14 @@ const HomePage = () => {
 
                                 {loading && <p>Loading venues...</p>}
                                 {error && <p>{error}</p>}
-                                {!loading && !error && (
+                                {!loading && !error &&  (
                                     <>
                                         <Grid container spacing={2} className={styles.venueGrid}>
                                             {paginatedVenues.map((venue) => (
                                                 <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
                                                     <VenueCard
                                                         title={venue.name}
+                                                        price={Math.round(venue.pricePerNightInEUR * (eurToPlnRate || 1))}
                                                         location={venue.location.name}
                                                         rating={venue.rating}
                                                         capacity={venue.capacity}
