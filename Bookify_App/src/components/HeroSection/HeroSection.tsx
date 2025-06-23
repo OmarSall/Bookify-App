@@ -61,20 +61,7 @@ const HeroSection = () => {
                             ),
                         }}
                     />
-                    <GuestsInput />
-                    {/*<CustomInput*/}
-                    {/*    name="guests"*/}
-                    {/*    placeholder="guests"*/}
-                    {/*    className={styles.input}*/}
-                    {/*    InputProps={{*/}
-                    {/*        startAdornment: (*/}
-                    {/*            <InputAdornment position="start">*/}
-                    {/*                <GroupIcon sx={{fontSize: 18, color: "#666"}}/>*/}
-                    {/*            </InputAdornment>*/}
-                    {/*        ),*/}
-                    {/*    }}*/}
-                    {/*/>*/}
-
+                    <GuestsInput/>
                     <CustomInput
                         name="venue"
                         placeholder="venue type"

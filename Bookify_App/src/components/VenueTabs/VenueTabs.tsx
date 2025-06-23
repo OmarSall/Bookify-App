@@ -1,5 +1,5 @@
 import styles from "./VenueTabs.module.css";
-import { Tabs, Tab, Box } from "@mui/material";
+import {Tabs, Tab, Box} from "@mui/material";
 import VenueDescriptionTab from "./VenueDescriptionTab";
 import VenueGalleryTab from "./VenueGalleryTab";
 import VenueMapTab from "./VenueMapTab";
@@ -32,17 +32,17 @@ const VenueTabs = ({
     return (
         <div className={styles.tabsWrapper}>
             <Tabs value={activeTab} onChange={handleTabChange} className={styles.tabs}>
-                <Tab label="Description" value="description" />
-                <Tab label="Gallery" value="gallery" />
-                <Tab label="Map" value="map" />
+                <Tab label="Description" value="description"/>
+                <Tab label="Gallery" value="gallery"/>
+                <Tab label="Map" value="map"/>
             </Tabs>
 
             <Box className={styles.tabContent}>
                 {activeTab === "description" && (
-                    <VenueDescriptionTab description={description} amenities={amenities} />
+                    <VenueDescriptionTab description={description} amenities={amenities}/>
                 )}
-                {activeTab === "gallery" && <VenueGalleryTab images={images} />}
-                {activeTab === "map" && <VenueMapTab coordinates={coordinates} />}
+                {activeTab === "gallery" && <VenueGalleryTab images={images}/>}
+                {activeTab === "map" && <VenueMapTab coordinates={coordinates}/>}
             </Box>
         </div>
     );

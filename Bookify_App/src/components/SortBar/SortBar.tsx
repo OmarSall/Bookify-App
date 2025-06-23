@@ -1,21 +1,23 @@
 import styles from "./SortBar.module.css";
-import { Box, Button, Typography } from "@mui/material";
+import {Box, Button} from "@mui/material";
+import ItemsPerPageSelector from "../ItemsPerPageSelector/ItemsPerPageSelector";
 
-const SortBar = () => {
+type SortBarProps = {
+    venuesPerPage: number;
+    onVenuesPerPageChange: (val: number) => void;
+};
+
+const SortBar = ({venuesPerPage, onVenuesPerPageChange}: SortBarProps) => {
     return (
         <Box className={styles.sortBar}>
-            {/* Show count */}
             <div className={styles.showCount}>
-                <Typography variant="body2" className={styles.label}>
-                    show
-                </Typography>
-                <div className={styles.countBox}>18</div>
-                <Typography variant="body2" className={styles.label}>
-                    on the page
-                </Typography>
+                <ItemsPerPageSelector
+                    value={venuesPerPage}
+                    options={[12, 24, 36, 48]}
+                    onChange={onVenuesPerPageChange}
+                />
             </div>
 
-            {/* Sort button */}
             <div className={styles.actions}>
                 <Button variant="outlined" className={styles.sortButton}>
                     sort

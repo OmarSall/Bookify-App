@@ -6,7 +6,7 @@ interface VenueDescriptionTabProps {
     amenities: string[];
 }
 
-const VenueDescriptionTab = ({ description, amenities }: VenueDescriptionTabProps) => {
+const VenueDescriptionTab = ({description, amenities}: VenueDescriptionTabProps) => {
     return (
         <div className={styles.description}>
             <p className={styles.text}>{description}</p>
@@ -16,7 +16,7 @@ const VenueDescriptionTab = ({ description, amenities }: VenueDescriptionTabProp
                 <ul className={styles.amenityList}>
                     {amenities.map((item, index) => (
                         <li key={index} className={styles.amenityItem}>
-                            <CheckIcon className={styles.icon} />
+                            <CheckIcon className={styles.icon}/>
                             {item}
                         </li>
                     ))}

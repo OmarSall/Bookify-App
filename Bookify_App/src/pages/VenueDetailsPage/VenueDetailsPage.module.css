@@ -3,3 +3,53 @@
     margin: 0 auto;
     padding: 2rem;
 }
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.leftColumn {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.rightColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.social {
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.socialTitle {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+.icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.icon {
+    font-size: 1.8rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.icon:hover {
+    color: #5c998f;
+}

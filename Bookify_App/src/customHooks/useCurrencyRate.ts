@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 const API_KEY = import.meta.env.VITE_EXCHANGE_API_KEY;
 const API_URL = `https://api.exchangerate.host/convert?from=EUR&to=PLN&amount=1&access_key=${API_KEY}`;
@@ -30,7 +30,7 @@ const useCurrencyRate = () => {
         void fetchRate();
     }, []);
 
-    return { rate, loading };
+    return {rate, loading};
 };
 
 export default useCurrencyRate;

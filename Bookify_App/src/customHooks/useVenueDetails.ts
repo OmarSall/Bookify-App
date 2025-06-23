@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { API_BASE_URL, ENDPOINTS } from "../constants/api";
+import {API_BASE_URL, ENDPOINTS} from "../constants/api";
 
 export interface VenueDetails {
     id: number;
@@ -46,7 +46,7 @@ const useVenueDetails = (venueId: number) => {
         })();
     }, [venueId]);
 
-    return { venueDetails, loading, error };
+    return {venueDetails, loading, error};
 };
 
 export default useVenueDetails;

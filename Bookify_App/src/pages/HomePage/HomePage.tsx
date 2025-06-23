@@ -13,12 +13,12 @@ import useVenues from "../../customHooks/useVenues";
 import useCurrencyRate from "../../customHooks/useCurrencyRate";
 
 const HomePage = () => {
-    const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
+    const {rate: eurToPlnRate, loading: rateLoading} = useCurrencyRate();
     const [page, setPage] = useState<number>(1);
     const navigate = useNavigate();
     const {venues, availableFeatures, loading, error} = useVenues();
 
-    const venuesPerPage = 12;
+    const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
     const paginatedVenues = venues.slice((page - 1) * venuesPerPage, page * venuesPerPage);
 
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
@@ -46,11 +46,15 @@ const HomePage = () => {
                             </aside>
 
                             <div className={styles.resultsArea}>
-                                <SortBar/>
-
+                                <SortBar
+                                    venuesPerPage={venuesPerPage}
+                                    onVenuesPerPageChange={(val) => {
+                                        setVenuesPerPage(val);
+                                        setPage(1);
+                                    }}
+                                />
                                 {loading && <p>Loading venues...</p>}
-                                {error && <p>{error}</p>}
-                                {!loading && !error &&  (
+                                {!loading && !error && (
                                     <>
                                         <Grid container spacing={2} className={styles.venueGrid}>
                                             {paginatedVenues.map((venue) => (
@@ -61,7 +65,8 @@ const HomePage = () => {
                                                         location={venue.location.name}
                                                         rating={venue.rating}
                                                         capacity={venue.capacity}
-                                                        images={[`https://picsum.photos/seed/${venue.albumId}a/400/300`, `https://picsum.photos/seed/${venue.albumId}b/400/300`]}                                                        onClick={() => handleCardClick(venue.id)}
+                                                        images={[`https://picsum.photos/seed/${venue.albumId}a/400/300`, `https://picsum.photos/seed/${venue.albumId}b/400/300`]}
+                                                        onClick={() => handleCardClick(venue.id)}
                                                     />
                                                 </Grid>
                                             ))}

@@ -4,7 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import StarIcon from "@mui/icons-material/Star";
 import GroupIcon from "@mui/icons-material/Group";
-import { useState } from "react";
+import {useState} from "react";
 
 type VenueCardProps = {
     title: string;
@@ -58,35 +58,31 @@ const VenueCard = ({
                     }}
                 >
                     {isFavorite ? (
-                        <FavoriteIcon className={styles.filled} />
+                        <FavoriteIcon className={styles.filled}/>
                     ) : (
-                        <FavoriteBorderIcon />
+                        <FavoriteBorderIcon/>
                     )}
                 </div>
 
-                {/* Title - top right */}
                 <div className={styles.titleBanner}>{title}</div>
-
-                {/* Bottom overlay */}
                 <div className={styles.bottomOverlay}>
                     <div className={styles.price}>
                         {price.toFixed(0)} zł / doba
                     </div>
                     <div className={styles.location}>
-                        <LocationOnIcon fontSize="small" />
+                        <LocationOnIcon fontSize="small"/>
                         {location}
                     </div>
                 </div>
             </div>
 
-            {/* Rating & Capacity */}
             <div className={styles.detailsBar}>
                 <div className={styles.detail}>
-                    <StarIcon fontSize="small" />
+                    <StarIcon fontSize="small"/>
                     rating {rating}
                 </div>
                 <div className={styles.detail}>
-                    <GroupIcon fontSize="small" />
+                    <GroupIcon fontSize="small"/>
                     capacity {capacity}
                 </div>
             </div>

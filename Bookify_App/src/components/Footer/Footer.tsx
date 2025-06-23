@@ -1,6 +1,6 @@
 import styles from "./Footer.module.css";
-import { Link } from "react-router-dom";
-import { Facebook, Instagram, Twitter, Email } from "@mui/icons-material";
+import {Link} from "react-router-dom";
+import {Facebook, Instagram, Twitter, Email} from "@mui/icons-material";
 
 const Footer = () => {
     return (
@@ -18,10 +18,10 @@ const Footer = () => {
                 </div>
 
                 <div className={styles.icons}>
-                    <Facebook />
-                    <Instagram />
-                    <Twitter />
-                    <Email />
+                    <Facebook/>
+                    <Instagram/>
+                    <Twitter/>
+                    <Email/>
                 </div>
             </div>
         </footer>

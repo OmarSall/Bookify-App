@@ -4,11 +4,11 @@ interface VenueGalleryTabProps {
     images: string[];
 }
 
-const VenueGalleryTab: React.FC<VenueGalleryTabProps> = ({ images }) => {
+const VenueGalleryTab: React.FC<VenueGalleryTabProps> = ({images}) => {
     return (
         <div>
             {images.map((url, index) => (
-                <img key={index} src={url} alt={`Gallery ${index}`} />
+                <img key={index} src={url} alt={`Gallery ${index}`}/>
             ))}
         </div>
     );

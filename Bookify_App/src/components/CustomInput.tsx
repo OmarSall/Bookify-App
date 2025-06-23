@@ -1,12 +1,12 @@
-import { TextField, TextFieldProps, InputAdornment } from "@mui/material";
+import {TextField, TextFieldProps} from "@mui/material";
 
-const CustomInput = ({ InputProps, ...props }: TextFieldProps) => (
+const CustomInput = ({InputProps, ...props}: TextFieldProps) => (
     <TextField
         variant="standard"
         InputProps={{
             ...InputProps,
             disableUnderline: true,
-            startAdornment: InputProps?.startAdornment, // ← zachowaj ikonę jeśli przekazana
+            startAdornment: InputProps?.startAdornment,
             sx: {
                 borderRadius: "999px",
                 backgroundColor: "white",

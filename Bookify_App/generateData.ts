@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
-import { writeFileSync } from "fs";
+import {faker} from "@faker-js/faker";
+import {writeFileSync} from "fs";
 
 type Venue = {
     id: number;
@@ -58,13 +58,13 @@ function generateVenues(count: number): { venues: Venue[]; venuesDetails: VenueD
     const venuesDetails: VenueDetails[] = [];
 
     for (let i = 1; i <= count; i++) {
-        const name = faker.word.words({ count: 2 }); // np. "Enchanted Hut"
+        const name = faker.word.words({count: 2}); // np. "Enchanted Hut"
         const postalCode = faker.location.zipCode();
         const city = faker.location.city();
-        const price = Number(faker.number.float({ min: 10, max: 200, fractionDigits: 2 }).toFixed(2));
-        const rating = Number(faker.number.float({ min: 3, max: 5, fractionDigits: 1 }).toFixed(1));
-        const capacity = faker.number.int({ min: 2, max: 10 });
-        const albumId = faker.number.int({ min: 1, max: 500 });
+        const price = Number(faker.number.float({min: 10, max: 200, fractionDigits: 2}).toFixed(2));
+        const rating = Number(faker.number.float({min: 3, max: 5, fractionDigits: 1}).toFixed(1));
+        const capacity = faker.number.int({min: 2, max: 10});
+        const albumId = faker.number.int({min: 1, max: 500});
 
         const venue: Venue = {
             id: i,
@@ -77,22 +77,22 @@ function generateVenues(count: number): { venues: Venue[]; venuesDetails: VenueD
             capacity,
             name,
             albumId,
-            features: faker.helpers.arrayElements(featuresList, faker.number.int({ min: 3, max: 7 })),
+            features: faker.helpers.arrayElements(featuresList, faker.number.int({min: 3, max: 7})),
         };
 
         const venueDetails: VenueDetails = {
             ...venue,
             venueId: venue.id,
-            numberOfReviews: faker.number.int({ min: 10, max: 500 }),
+            numberOfReviews: faker.number.int({min: 10, max: 500}),
             description: faker.lorem.paragraph(),
-            features: faker.helpers.arrayElements(featuresList, faker.number.int({ min: 5, max: 10 })),
+            features: faker.helpers.arrayElements(featuresList, faker.number.int({min: 5, max: 10})),
             sleepingDetails: {
-                maxCapacity: capacity + faker.number.int({ min: 2, max: 4 }),
-                amountOfBeds: faker.number.int({ min: 2, max: 6 }),
+                maxCapacity: capacity + faker.number.int({min: 2, max: 4}),
+                amountOfBeds: faker.number.int({min: 2, max: 6}),
             },
             checkInHour: "12pm",
             checkOutHour: "10am",
-            distanceFromCityCenterInKM: faker.number.int({ min: 1, max: 15 }),
+            distanceFromCityCenterInKM: faker.number.int({min: 1, max: 15}),
             contactDetails: {
                 phone: faker.phone.number(),
                 email: faker.internet.email(),
@@ -103,7 +103,7 @@ function generateVenues(count: number): { venues: Venue[]; venuesDetails: VenueD
         venuesDetails.push(venueDetails);
     }
 
-    return { venues, venuesDetails };
+    return {venues, venuesDetails};
 }
 
 const data = generateVenues(100);
