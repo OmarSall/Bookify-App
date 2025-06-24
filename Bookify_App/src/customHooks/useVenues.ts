@@ -38,9 +38,14 @@ const useVenues = (page: number, limit: number) => {
                     },
                 });
 
-                setVenues(res.data);
+                setVenues(res.data.map(v => ({
+                    ...v,
+                    id: Number(v.id),
+                })));
                 const total = res.headers["x-total-count"];
                 setTotalCount(Number(total));
+                console.log("Fetched venue:", res.data[0]);
+                console.log("Typeof id:", typeof res.data[0].id);
             } catch (err) {
                 setError("Failed to fetch venues");
             } finally {
