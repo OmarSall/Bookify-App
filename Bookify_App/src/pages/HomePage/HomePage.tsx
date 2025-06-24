@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styles from "./HomePage.module.css";
 
@@ -16,12 +16,10 @@ const HomePage = () => {
     const {rate: eurToPlnRate, loading: rateLoading} = useCurrencyRate();
     const [page, setPage] = useState<number>(1);
     const navigate = useNavigate();
-    const {venues, availableFeatures, loading, error} = useVenues();
-
     const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
-    const paginatedVenues = venues.slice((page - 1) * venuesPerPage, page * venuesPerPage);
-
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+    const {venues, totalCount, availableFeatures, loading, error} = useVenues(page, venuesPerPage);
+
 
     const handleCardClick = (venueId: number) => {
         navigate(`/venue/${venueId}`);
@@ -53,11 +51,12 @@ const HomePage = () => {
                                         setPage(1);
                                     }}
                                 />
-                                {loading && <p>Loading venues...</p>}
+                                {(loading) && <p>Loading venues...</p>}
+                                {!loading && rateLoading && <p>Converting prices...</p>}
                                 {!loading && !error && (
                                     <>
                                         <Grid container spacing={2} className={styles.venueGrid}>
-                                            {paginatedVenues.map((venue) => (
+                                            {venues.map((venue) => (
                                                 <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
                                                     <VenueCard
                                                         title={venue.name}
@@ -74,9 +73,9 @@ const HomePage = () => {
 
                                         <Box className={styles.paginationWrapper}>
                                             <CustomPagination
-                                                totalPages={Math.ceil(venues.length / venuesPerPage)}
+                                                totalPages={Math.ceil(totalCount / venuesPerPage)}
                                                 currentPage={page}
-                                                onPageChange={(newPage: number) => setPage(newPage)}
+                                                onPageChange={setPage}
                                             />
                                         </Box>
                                     </>

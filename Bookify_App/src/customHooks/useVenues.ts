@@ -16,33 +16,50 @@ export interface Venue {
     features: string[];
 }
 
-const useVenues = () => {
+const useVenues = (page: number, limit: number) => {
     const [venues, setVenues] = useState<Venue[]>([]);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        (async () => {
+        const fetchVenues = async () => {
+            setLoading(true);
             try {
-                const res = await axios.get(`${API_BASE_URL}${ENDPOINTS.VENUES}`);
-                console.log("✅ Fetched venues:", res.data);
-                console.log("🔍 First venue:", res.data[0]);
+                const res = await axios.get<Venue[]>(`${API_BASE_URL}${ENDPOINTS.VENUES}`, {
+                    params: {
+                        _page: page,
+                        _limit: limit,
+                        _sort: "id",
+                        _order: "asc",
+                    },
+                    headers: {
+                        Accept: "application/json",
+                    },
+                });
+
                 setVenues(res.data);
+                const total = res.headers["x-total-count"];
+                setTotalCount(Number(total));
             } catch (err) {
                 setError("Failed to fetch venues");
             } finally {
                 setLoading(false);
             }
-        })();
-    }, []);
+        };
+
+        void fetchVenues();
+    }, [page, limit]);
 
     const availableFeatures = useMemo(() => {
-        if (!venues.length) return [];
+        if (!venues.length) {
+            return [];
+        }
         const features = venues.flatMap((venue) => venue.features || []);
         return Array.from(new Set(features));
     }, [venues]);
 
-    return {venues, availableFeatures, loading, error};
+    return {venues, totalCount, availableFeatures, loading, error};
 };
 
 export default useVenues;

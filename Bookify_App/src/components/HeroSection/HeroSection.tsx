@@ -6,7 +6,6 @@ import CustomInput from "../CustomInput";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import GroupIcon from "@mui/icons-material/Group";
 import SearchIcon from "@mui/icons-material/Search";
 import {InputAdornment} from "@mui/material";
 import GuestsInput from "./GuestInput";
