@@ -75,7 +75,10 @@ const HomePage = () => {
                                             <CustomPagination
                                                 totalPages={Math.ceil(totalCount / venuesPerPage)}
                                                 currentPage={page}
-                                                onPageChange={setPage}
+                                                onPageChange={(newPage) => {
+                                                    console.log("🧭 Going to page:", newPage);
+                                                    setPage(newPage);
+                                                }}
                                             />
                                         </Box>
                                     </>

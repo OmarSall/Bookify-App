@@ -97,7 +97,6 @@ const FilterSidebar = ({
             />
         ));
 
-    console.log("availableFeatures:", availableFeatures);
     if (!availableFeatures.length) {
         return (
             <div className={styles.sidebar}>

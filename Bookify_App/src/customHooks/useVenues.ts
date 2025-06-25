@@ -1,6 +1,6 @@
-import {useEffect, useState, useMemo} from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import {API_BASE_URL, ENDPOINTS} from "../constants/api";
+import { API_BASE_URL, ENDPOINTS } from "../constants/api";
 
 export interface Venue {
     id: number;
@@ -17,8 +17,7 @@ export interface Venue {
 }
 
 const useVenues = (page: number, limit: number) => {
-    const [venues, setVenues] = useState<Venue[]>([]);
-    const [totalCount, setTotalCount] = useState<number>(0);
+    const [allVenues, setAllVenues] = useState<Venue[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -26,27 +25,17 @@ const useVenues = (page: number, limit: number) => {
         const fetchVenues = async () => {
             setLoading(true);
             try {
-                const res = await axios.get<Venue[]>(`${API_BASE_URL}${ENDPOINTS.VENUES}`, {
-                    params: {
-                        _page: page,
-                        _limit: limit,
-                        _sort: "id",
-                        _order: "asc",
-                    },
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
+                const res = await axios.get(`${API_BASE_URL}${ENDPOINTS.VENUES}`);
+                const rawVenues = res.data;
 
-                setVenues(res.data.map(v => ({
+                const normalizedData: Venue[] = rawVenues.map((v: any) => ({
                     ...v,
                     id: Number(v.id),
-                })));
-                const total = res.headers["x-total-count"];
-                setTotalCount(Number(total));
-                console.log("Fetched venue:", res.data[0]);
-                console.log("Typeof id:", typeof res.data[0].id);
+                }));
+
+                setAllVenues(normalizedData);
             } catch (err) {
+                console.error("❌ Failed to fetch venues", err);
                 setError("Failed to fetch venues");
             } finally {
                 setLoading(false);
@@ -54,17 +43,24 @@ const useVenues = (page: number, limit: number) => {
         };
 
         void fetchVenues();
-    }, [page, limit]);
+    }, []);
+
+    const paginatedVenues = useMemo(() => {
+        const start = (page - 1) * limit;
+        return allVenues.slice(start, start + limit);
+    }, [allVenues, page, limit]);
 
     const availableFeatures = useMemo(() => {
-        if (!venues.length) {
-            return [];
-        }
-        const features = venues.flatMap((venue) => venue.features || []);
-        return Array.from(new Set(features));
-    }, [venues]);
+        return Array.from(new Set(allVenues.flatMap(v => v.features || [])));
+    }, [allVenues]);
 
-    return {venues, totalCount, availableFeatures, loading, error};
+    return {
+        venues: paginatedVenues,
+        totalCount: allVenues.length,
+        availableFeatures,
+        loading,
+        error,
+    };
 };
 
 export default useVenues;
