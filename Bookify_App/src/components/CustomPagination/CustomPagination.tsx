@@ -23,10 +23,8 @@ const CustomPagination = ({
                 pages.push(i);
             }
 
-            if (totalPages > 6) {
-                pages.push("...");
-                pages.push(totalPages);
-            }
+            pages.push("...");
+            pages.push(totalPages);
         }
 
         return pages;
