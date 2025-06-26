@@ -1,0 +1,44 @@
+.footerWrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.footerInner {
+    width: 100%;
+    max-width: 1440px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 2rem;
+    font-family: "Prompt", sans-serif;
+    gap: 2rem;
+}
+
+.topLinks {
+    display: flex;
+    gap: 4rem;
+    font-size: 0.85rem;
+    color: #222;
+    text-transform: lowercase;
+}
+
+.topLinks a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.message {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #222;
+    line-height: 1.4;
+}
+
+.icons {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.6rem;
+    color: black;
+}

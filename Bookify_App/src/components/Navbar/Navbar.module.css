@@ -1,0 +1,49 @@
+.navbarWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.navbarInner {
+    width: 100%;
+    max-width: 1440px;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ffffff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    font-family: "Prompt", sans-serif;
+}
+
+.logoLink {
+    text-decoration: none;
+    color: #b1b1b1;
+    font-family: "Prompt", sans-serif;
+    font-size: 1.8rem;
+    font-weight: lighter;
+}
+
+.navLinks {
+    display: flex;
+    gap: 2rem;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-transform: none;
+}
+
+.active {
+    font-weight: 600;
+}
+
+.loginLink {
+    margin-left: 1rem;
+}

@@ -1,0 +1,40 @@
+.description {
+    font-family: "Prompt", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.text {
+    margin-bottom: 2rem;
+}
+
+.subheading {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #222;
+}
+
+.amenities {
+    display: flex;
+    flex-direction: column;
+}
+
+.amenityList {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.amenityItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.icon {
+    color: #4caf50;
+}

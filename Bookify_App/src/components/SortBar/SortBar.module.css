@@ -1,0 +1,38 @@
+.sortBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.showCount {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.label {
+    color: #444;
+    font-size: 0.9rem;
+}
+
+.countBox {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.sortButton {
+    text-transform: lowercase;
+    font-size: 0.8rem;
+    font-weight: 500;
+}

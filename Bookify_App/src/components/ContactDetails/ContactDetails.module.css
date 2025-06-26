@@ -1,0 +1,21 @@
+.wrapper {
+    margin-top: 2rem;
+}
+
+.heading {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.line {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin-bottom: 1rem;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}

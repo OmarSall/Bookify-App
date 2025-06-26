@@ -1,0 +1,16 @@
+.backButton {
+    background: none;
+    border: none;
+    color: #64b5a3;
+    font-size: 1rem;
+    font-family: "Prompt", sans-serif;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1rem;
+    text-align: left;
+    transition: color 0.2s;
+}
+
+.backButton:hover {
+    color: #4aa392;
+}
