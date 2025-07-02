@@ -55,13 +55,13 @@ const useVenues = (page: number, limit: number) => {
 
                 setVenues(normalizedData);
 
-                const total =
+                const totalCount =
                     res.data?.meta?.pagination?.total ??
                     Number(res.headers["x-total-count"]) ??
                     normalizedData.length;
 
-                setTotalCount(total);
-                console.log("📊 Total count:", total);
+                setTotalCount(totalCount);
+                console.log("📊 Total count:", totalCount);
             } catch (err) {
                 console.error("❌ Failed to fetch venues", err);
                 setError("Failed to fetch venues");

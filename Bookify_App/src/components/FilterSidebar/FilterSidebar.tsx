@@ -10,6 +10,12 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useMemo, useState} from "react";
+import {
+    AMENITIES_KEYWORDS,
+    ROOM_AMENITIES_KEYWORDS,
+    NEIGHBOURHOODS_KEYWORDS,
+    HANDICAP_ACCESSIBILITY_KEYWORDS,
+} from "../../constants/featureKeywords";
 
 type FilterSidebarProps = {
     availableFeatures: string[];
@@ -27,33 +33,15 @@ const FilterSidebar = ({
     const categorizedFeatures = useMemo(() => {
         const getByKeywords = (keywords: string[]) =>
             availableFeatures.filter((feature) =>
-                keywords.some((kw) =>
-                    feature.toLowerCase().includes(kw.toLowerCase())
+                keywords.some((keyword) =>
+                    feature.toLowerCase().includes(keyword.toLowerCase())
                 )
             );
 
-        const amenities = getByKeywords([
-            "wifi", "restaurant", "bar", "pool", "jacuzzi", "garden",
-            "fitness", "fitness centre", "playground", "reception", "24h reception",
-            "speakers", "outdoor music", "indoor music", "karaoke", "parking"
-        ]);
-
-        const roomAmenities = getByKeywords([
-            "library", "kitchen", "kitchen facilities", "bathroom", "bathroom facilities",
-            "pet", "pet friendly", "bedding", "hypoallergenic bedding", "air conditioning",
-            "TV", "safe"
-        ]);
-
-        const neighbourhoods = getByKeywords([
-            "lake", "forest", "mountain", "mountains", "sea", "national park", "river",
-            "park", "mall", "zoo", "church", "town", "old town", "monument", "historical monument",
-            "museum", "theatre", "cinema", "amusement", "amusement park", "restaurant"
-        ]);
-
-        const handicapAccessibility = getByKeywords([
-            "wheelchair", "wheelchair friendly", "blind", "blind friendly",
-            "deaf", "deaf friendly", "short-grown friendly"
-        ]);
+        const amenities = getByKeywords(AMENITIES_KEYWORDS);
+        const roomAmenities = getByKeywords(ROOM_AMENITIES_KEYWORDS);
+        const neighbourhoods = getByKeywords(NEIGHBOURHOODS_KEYWORDS);
+        const handicapAccessibility = getByKeywords(HANDICAP_ACCESSIBILITY_KEYWORDS);
 
         const used = new Set([
             ...amenities,
@@ -62,7 +50,7 @@ const FilterSidebar = ({
             ...handicapAccessibility,
         ]);
 
-        const otherFeatures = availableFeatures.filter((f) => !used.has(f));
+        const otherFeatures = availableFeatures.filter((feature) => !used.has(feature));
 
         return {
             amenities,
@@ -85,10 +73,10 @@ const FilterSidebar = ({
                 control={
                     <Checkbox
                         checked={selectedFeatures.includes(feature)}
-                        onChange={(e) => {
-                            const updated = e.target.checked
+                        onChange={(event) => {
+                            const updated = event.target.checked
                                 ? [...selectedFeatures, feature]
-                                : selectedFeatures.filter((f) => f !== feature);
+                                : selectedFeatures.filter((selectedFeature) => selectedFeature !== feature);
                             setSelectedFeatures(updated);
                         }}
                     />

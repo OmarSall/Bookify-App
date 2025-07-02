@@ -8,7 +8,6 @@ import VenueDetailsPage from "./pages/VenueDetailsPage/VenueDetailsPage";
 function App() {
 
     return (
-        <>
             <Router>
                 <div className="app-container">
                     <Navbar/>
@@ -21,7 +20,6 @@ function App() {
                     <Footer/>
                 </div>
             </Router>
-        </>
     )
 }
 

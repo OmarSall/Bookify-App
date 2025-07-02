@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {API_BASE_URL, ENDPOINTS} from "../constants/api";
+import axiosInstance from "../services/axiosInstance";
+import {ENDPOINTS} from "../constants/api";
 
 export interface VenueDetails {
     id: number;
@@ -36,7 +36,7 @@ const useVenueDetails = (venueId: number) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await axios.get(`${API_BASE_URL}${ENDPOINTS.VENUE_DETAILS}?venueId=${venueId}`);
+                const res = await axiosInstance.get(`${ENDPOINTS.VENUE_DETAILS}?venueId=${venueId}`);
                 setVenueDetails(res.data[0]);
             } catch (err) {
                 setError("Failed to fetch venue details");

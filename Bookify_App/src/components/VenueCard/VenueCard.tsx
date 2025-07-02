@@ -46,32 +46,33 @@ const VenueCard = ({
                     alt={title}
                     className={styles.image}
                 />
-
-                <button className={styles.arrowLeft} onClick={handlePrev}>‹</button>
-                <button className={styles.arrowRight} onClick={handleNext}>›</button>
-                {/* Heart icon - top left */}
-                <div
-                    className={styles.favoriteIcon}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setIsFavorite((prev) => !prev);
-                    }}
-                >
-                    {isFavorite ? (
-                        <FavoriteIcon className={styles.filled}/>
-                    ) : (
-                        <FavoriteBorderIcon/>
-                    )}
-                </div>
-
-                <div className={styles.titleBanner}>{title}</div>
-                <div className={styles.bottomOverlay}>
-                    <div className={styles.price}>
-                        {price.toFixed(0)} zł / doba
+                <div className={styles.overlay}>
+                    <button className={styles.arrowLeft} onClick={handlePrev}>‹</button>
+                    <button className={styles.arrowRight} onClick={handleNext}>›</button>
+                    {/* Heart icon - top left */}
+                    <div
+                        className={styles.favoriteIcon}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsFavorite((prev) => !prev);
+                        }}
+                    >
+                        {isFavorite ? (
+                            <FavoriteIcon className={styles.filled}/>
+                        ) : (
+                            <FavoriteBorderIcon/>
+                        )}
                     </div>
-                    <div className={styles.location}>
-                        <LocationOnIcon fontSize="small"/>
-                        {location}
+
+                    <div className={styles.titleBanner}>{title}</div>
+                    <div className={styles.bottomOverlay}>
+                        <div className={styles.price}>
+                            {price.toFixed(0)} zł / doba
+                        </div>
+                        <div className={styles.location}>
+                            <LocationOnIcon fontSize="small"/>
+                            {location}
+                        </div>
                     </div>
                 </div>
             </div>

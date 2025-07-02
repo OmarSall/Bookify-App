@@ -12,7 +12,6 @@ const useCurrencyRate = () => {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
-                console.log("💱 API response:", data);
 
                 if (data?.result) {
                     sessionStorage.setItem("EUR_PLN_RATE", data.result.toString());
