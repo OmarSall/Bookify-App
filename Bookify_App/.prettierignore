@@ -1,0 +1,18 @@
+# Ignore build outputs
+dist
+build
+coverage
+
+# Ignore dependencies
+node_modules
+
+# Ignore mock database
+db.json
+
+# Ignore ESLint config output if generated
+eslint.config.js
+
+# Ignore package lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
