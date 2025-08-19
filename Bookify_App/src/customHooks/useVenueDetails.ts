@@ -1,52 +1,30 @@
-import {useEffect, useState} from "react";
-import axiosInstance from "../services/axiosInstance";
-import {ENDPOINTS} from "../constants/api";
+import { useEffect, useState } from 'react';
+import { fetchVenueById, type VenueDetailsDto } from '../services/venues';
 
-export interface VenueDetails {
-    id: number;
-    venueId: number;
-    description: string;
-    albumId: number;
-    features: string[];
-    sleepingDetails: {
-        maxCapacity: number;
-        amountOfBeds: number;
-    };
-    contactDetails: {
-        email: string;
-        phone: string;
-    };
-    checkInHour: string;
-    checkOutHour: string;
-    distanceFromCityCenterInKM: number;
-    name: string;
-    pricePerNightInEUR: number;
-    rating: number;
-    location: {
-        name: string;
-        postalCode: string;
-    };
-}
-
-const useVenueDetails = (venueId: number) => {
-    const [venueDetails, setVenueDetails] = useState<VenueDetails | null>(null);
+export default function useVenueDetails(id: number) {
+    const [venueDetails, setVenueDetails] = useState<VenueDetailsDto | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!id) return;
+        let alive = true;
         (async () => {
             try {
-                const res = await axiosInstance.get(`${ENDPOINTS.VENUE_DETAILS}?venueId=${venueId}`);
-                setVenueDetails(res.data[0]);
-            } catch (err) {
-                setError("Failed to fetch venue details");
+                setLoading(true);
+                const data = await fetchVenueById(id);
+                if (!alive) return;
+                setVenueDetails(data);
+                setError(null);
+            } catch (e: any) {
+                if (!alive) return;
+                setError(e?.response?.data?.message ?? 'Failed to load venue');
             } finally {
-                setLoading(false);
+                if (alive) setLoading(false);
             }
         })();
-    }, [venueId]);
+        return () => { alive = false; };
+    }, [id]);
 
-    return {venueDetails, loading, error};
-};
-
-export default useVenueDetails;
+    return { venueDetails, loading, error };
+}
