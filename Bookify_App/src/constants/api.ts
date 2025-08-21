@@ -2,10 +2,10 @@ export const API_BASE_URL = "http://localhost:3000";
 
 export const ENDPOINTS = {
     AUTH: {
-        SIGNUP: '/auth/signup',
-        LOGIN:  '/auth/login',
-        LOGOUT: '/auth/logout',
-        ME:     '/auth/me',
+        SIGNUP: '/authentication/signup',
+        LOGIN:  '/authentication/login',
+        LOGOUT: '/authentication/logout',
+        ME:     '/authentication',
     },
     VENUES: {
         LIST: '/venues',

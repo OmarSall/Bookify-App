@@ -21,6 +21,7 @@ function App() {
               <Route path="/venue/:id" element={<VenueDetailsPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/start-hosting" element={<LoginPage />} />
             </Routes>
           </main>
           <Footer />

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { fetchVenues, type VenueCardDto } from "../services/venues";
+import { useEffect, useMemo, useState } from 'react';
+import { fetchVenues, type VenueCardDto } from '../services/venues';
 
 export default function useVenues(page: number, perPage: number) {
   const [all, setAll] = useState<VenueCardDto[]>([]);
@@ -17,14 +17,13 @@ export default function useVenues(page: number, perPage: number) {
         setError(null);
       } catch (e: any) {
         if (!alive) return;
-        setError(e?.response?.data?.message ?? "Failed to load venues");
+        console.error('useVenues error:', e?.response ?? e);
+        setError(e?.response?.data?.message ?? 'Failed to load venues');
       } finally {
         if (alive) setLoading(false);
       }
     })();
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, []);
 
   const totalCount = all.length;
