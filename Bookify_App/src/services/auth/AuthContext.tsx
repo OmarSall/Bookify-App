@@ -1,37 +1,50 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { me, type AuthUser } from "../auth";
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { me, logout as apiLogout, type AuthUser } from '../auth';
 
-type AuthCtx = {
+export interface AuthContextValue {
   user: AuthUser | null;
-  setUser:
-    (u: AuthUser | null) => void;
+  setUser: (user: AuthUser | null) => void;
   loading: boolean;
-};
-const Ctx = createContext<AuthCtx>({
-  user: null,
-  setUser: () => {},
-  loading: true,
-});
+  logout: () => Promise<void>;
+}
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+export function useAuth(): AuthContextValue {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let alive = true;
     (async () => {
       try {
-        setUser(await me());
+        const currentUser = await me();
+        if (!alive) return;
+        setUser(currentUser);
       } catch {
+        if (!alive) return;
         setUser(null);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     })();
+    return () => { alive = false; };
   }, []);
 
-  return <Ctx.Provider value={{ user, setUser, loading }}>{children}</Ctx.Provider>;
-}
+  async function logout() {
+    await apiLogout();
+    setUser(null);
+  }
 
-export function useAuth() {
-  return useContext(Ctx);
+  const value: AuthContextValue = { user, setUser, loading, logout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
