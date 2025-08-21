@@ -1,13 +1,17 @@
-import { http } from "../lib/http";
+import { http } from '../lib/http';
+import type { FavouriteListItemDto } from './favourites.types';
 
 export async function myFavourites() {
-  return (await http.get("/favourites/me")).data;
+  const { data } = await http.get<FavouriteListItemDto[]>('/favourites/me');
+  return data;
 }
 
 export async function addFavourite(venueId: number) {
-  return (await http.post(`/favourites/${venueId}`)).data;
+  const { data } = await http.post<FavouriteListItemDto>(`/favourites/${venueId}`);
+  return data;
 }
 
 export async function removeFavourite(venueId: number) {
-  return (await http.delete(`/favourites/${venueId}`)).data;
+  const { data } = await http.delete<unknown>(`/favourites/${venueId}`);
+  return data;
 }
