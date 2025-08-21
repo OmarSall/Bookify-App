@@ -5,12 +5,11 @@ import styles from "./HomePage.module.css";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
 import SortBar from "../../components/SortBar/SortBar";
-import VenueCard from "../../components/VenueCard/VenueCard";
+import VenueCard from '@/components/VenueCard';
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 
 import { Box, Grid } from "@mui/material";
-import useVenues from "../../customHooks/useVenues";
-import useCurrencyRate from "../../customHooks/useCurrencyRate";
+import { useVenues, useCurrencyRate } from '@/customHooks';
 
 const HomePage = () => {
   const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
@@ -59,6 +58,7 @@ const HomePage = () => {
                       {venues.map((venue) => (
                         <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
                           <VenueCard
+                            id={venue.id}
                             title={venue.name}
                             price={Math.round(venue.pricePerNightInEUR * (eurToPlnRate || 1))}
                             location={venue.location.name ?? ""}

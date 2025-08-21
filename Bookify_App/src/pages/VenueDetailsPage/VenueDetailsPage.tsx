@@ -11,8 +11,8 @@ import styles from "./VenueDetailsPage.module.css";
 import { Facebook, Instagram, Twitter, Email } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 
-import { createBooking } from "../../services/bookings";
-import { useAuth } from "../../services/auth/AuthContext";
+import { createBooking } from "@/services/bookings";
+import { useAuth } from "@/services/auth/AuthContext";
 
 function BookingBox({
                         venueId,

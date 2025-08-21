@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { myFavourites, removeFavourite } from "../../services/favourites";
-import type { FavouriteListItemDto } from "../../services/favourites.types";
+import { myFavourites, removeFavourite } from "@/services/favourites";
+import type { FavouriteListItemDto } from "@/services";
 import styles from "./MyFavouritesPage.module.css";
 
 export default function MyFavouritesPage() {

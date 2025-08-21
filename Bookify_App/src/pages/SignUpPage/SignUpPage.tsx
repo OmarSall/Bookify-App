@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { signup } from '../../services/auth';
-import { useAuth } from '../../services/auth/AuthContext';
+import { signup } from "@/services/auth";
+import { useAuth } from "@/services/auth/AuthContext";
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './SignUpPage.module.css';
 

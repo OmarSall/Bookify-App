@@ -7,6 +7,8 @@
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": { "@/*": ["*"] },
     "resolveJsonModule": true
   },
   "ts-node": {

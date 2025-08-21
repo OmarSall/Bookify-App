@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createVenue } from '../../services/venues';
+import { createVenue } from "@/services/venues";
 import styles from './StartHostingPage.module.css';
 
 export default function StartHostingPage() {

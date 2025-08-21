@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { cancelBooking, myBookings, updateBooking } from '../../services/bookings';
-import type { BookingListItemDto } from '../../services/bookings.types';
+import { cancelBooking, myBookings, updateBooking } from "@/services/bookings";
+import type { BookingListItemDto } from "@/services/bookings.types";
 import styles from './MyBookingsPage.module.css';
 
 export default function MyBookingsPage() {
