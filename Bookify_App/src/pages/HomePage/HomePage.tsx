@@ -59,6 +59,7 @@ const HomePage = () => {
                         <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
                           <VenueCard
                             id={venue.id}
+                            isInitiallyFavourite={venue.isFavourite ?? false}
                             title={venue.name}
                             price={Math.round(venue.pricePerNightInEUR * (eurToPlnRate || 1))}
                             location={venue.location.name ?? ""}

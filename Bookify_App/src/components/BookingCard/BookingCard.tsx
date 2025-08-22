@@ -1,91 +1,106 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./BookingCard.module.css";
-import {Typography, Button, TextField, Checkbox, FormControlLabel} from "@mui/material";
-import {useState} from "react";
+import { useAuth } from "@/services/auth/AuthContext";
+import { createBooking } from "@/services/bookings";
 
 type BookingCardProps = {
-    pricePerNight: number;
+  pricePerNight: number;
+  venueId?: number;
+  onBooked?: () => void;
 };
 
-const BookingCard = ({pricePerNight}: BookingCardProps) => {
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [justOneDay, setJustOneDay] = useState(false);
+export default function BookingCard({ pricePerNight, venueId, onBooked }: BookingCardProps) {
+  const { user } = useAuth();
 
-    const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStartDate(e.target.value);
-    };
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
-    const handleEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEndDate(e.target.value);
-    };
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!venueId) {
+      return;
+    }
+    setMessage(null);
 
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setJustOneDay(e.target.checked);
-        if (e.target.checked) {
-            setEndDate("");
-        }
-    };
+    if (!user) {
+      setMessage("Please log in to make a booking.");
+      return;
+    }
 
-    const calculateTotal = () => {
-        if (!startDate) {
-            return 0;
-        }
-        if (justOneDay) {
-            return pricePerNight;
-        }
+    try {
+      setSubmitting(true);
+      const startIso = `${startDate}T12:00:00.000Z`;
+      const endIso = `${endDate}T12:00:00.000Z`;
+      await createBooking({ venueId, startDate: startIso, endDate: endIso });
+      setMessage("✅ Booked!");
+      onBooked?.();
+    } catch (caught: any) {
+      setMessage(caught?.response?.data?.message ?? "Booking failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-        return days > 0 ? days * pricePerNight : 0;
-    };
-
+  if (!venueId) {
     return (
-        <div className={styles.bookingCard}>
-            <Typography variant="h6" className={styles.title}>
-                Book this venue
-            </Typography>
-
-            <div className={styles.dateInputs}>
-                <TextField
-                    label="starts at"
-                    type="date"
-                    value={startDate}
-                    onChange={handleStartChange}
-                    InputLabelProps={{shrink: true}}
-                    fullWidth
-                />
-                {!justOneDay && (
-                    <TextField
-                        label="ends at"
-                        type="date"
-                        value={endDate}
-                        onChange={handleEndChange}
-                        InputLabelProps={{shrink: true}}
-                        fullWidth
-                    />
-                )}
-                <FormControlLabel
-                    control={<Checkbox checked={justOneDay} onChange={handleCheckboxChange}/>}
-                    label="just one day"
-                />
-            </div>
-
-            <div className={styles.priceInfo}>
-                <Typography variant="body2">per day</Typography>
-                <Typography variant="body1">{pricePerNight} zł</Typography>
-
-                <Typography variant="body2" sx={{marginTop: "1rem"}}>
-                    total
-                </Typography>
-                <Typography variant="h6">{calculateTotal()} zł</Typography>
-            </div>
-
-            <Button variant="contained" className={styles.bookButton}>
-                Book
-            </Button>
+      <div className={styles.card}>
+        <div className={styles.priceRow}>
+          <span className={styles.price}>{pricePerNight.toFixed(0)} zł</span>
+          <span className={styles.per}>/ doba</span>
         </div>
+      </div>
     );
-};
+  }
 
-export default BookingCard;
+  // Z venueId — cena + formularz
+  return (
+    <div className={styles.card}>
+      <div className={styles.priceRow}>
+        <span className={styles.price}>{pricePerNight.toFixed(0)} zł</span>
+        <span className={styles.per}>/ doba</span>
+      </div>
+
+      <form onSubmit={onSubmit} className={styles.form} noValidate>
+        {!user && (
+          <div className={styles.hint}>
+            You are not logged in.{" "}
+            <Link to="/login" className={styles.link}>Log in</Link> to book this venue.
+          </div>
+        )}
+
+        <label className={styles.label} htmlFor="start">Start date</label>
+        <input
+          id="start"
+          type="date"
+          className={styles.input}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          required
+        />
+
+        <label className={styles.label} htmlFor="end">End date</label>
+        <input
+          id="end"
+          type="date"
+          className={styles.input}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          required
+        />
+
+        <button
+          type="submit"
+          className={styles.submitBtn}
+          disabled={submitting || !startDate || !endDate}
+        >
+          {submitting ? "Booking…" : "Book"}
+        </button>
+
+        {message && <div className={styles.message}>{message}</div>}
+      </form>
+    </div>
+  );
+}

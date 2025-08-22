@@ -1,5 +1,5 @@
-import { http } from "../lib/http";
-import { ENDPOINTS } from "../constants/api";
+import { http } from "@/lib/http";
+import { ENDPOINTS } from "@/constants/api";
 
 export type AuthUser = {
   id: number;
