@@ -1,12 +1,59 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { cancelBooking, myBookings, updateBooking } from "@/services/bookings";
 import type { BookingListItemDto } from "@/services/bookings.types";
-import styles from './MyBookingsPage.module.css';
+import styles from "./MyBookingsPage.module.css";
+import { users } from "@/services";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/services/auth/AuthContext";
+import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
 
 export default function MyBookingsPage() {
   const [bookings, setBookings] = useState<BookingListItemDto[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loadingList, setLoadingList] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+
+  function openConfirm() {
+    if (deleting) {
+      return;
+    }
+    setConfirmOpen(true);
+  }
+
+  function closeConfirm() {
+    if (deleting) {
+      return;
+    }
+    setConfirmOpen(false);
+  }
+
+  async function handleConfirmDelete() {
+    try {
+      setDeleting(true);
+      setDeleteError(null);
+
+      // Call backend (uses axios http with credentials)
+      await users.deleteSelf();
+
+      // Clear auth state
+      if (typeof logout === "function") {
+        await logout();
+      }
+
+      // Close dialog and redirect home
+      setConfirmOpen(false);
+      navigate("/", { replace: true });
+    } catch (error: any) {
+      setDeleteError(error?.message ?? "Failed to delete account.");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   async function loadBookings() {
     try {
@@ -15,7 +62,7 @@ export default function MyBookingsPage() {
       setBookings(data);
       setError(null);
     } catch (caught: any) {
-      setError(caught?.response?.data?.message ?? 'Failed to load');
+      setError(caught?.response?.data?.message ?? "Failed to load");
     } finally {
       setLoadingList(false);
     }
@@ -45,6 +92,32 @@ export default function MyBookingsPage() {
                   <BookingRow key={booking.id} booking={booking} onChanged={loadBookings} />
                 ))}
               </div>
+              {/* Account deletion section */}
+              <div className={styles.deleteAccountBox}>
+                {deleteError && <div className={styles.errorText}>{deleteError}</div>}
+
+                <button
+                  onClick={openConfirm}
+                  className={styles.dangerBtn}
+                  disabled={deleting}
+                  title="Delete my account permanently"
+                >
+                  {deleting ? "Deleting…" : "Delete my account"}
+                </button>
+              </div>
+
+              {/* Confirmation dialog (MUI) */}
+              <ConfirmDialog
+                open={confirmOpen}
+                onClose={closeConfirm}
+                onConfirm={handleConfirmDelete}
+                loading={deleting}
+                title="Delete your account?"
+                description="This will permanently remove your profile, hosted venues, cancel your bookings, and remove favourites. This action cannot be undone."
+                confirmText="Yes, delete"
+                cancelText="Keep my account"
+              />
+
             </div>
           </div>
         </div>
@@ -83,7 +156,7 @@ function BookingRow({
       });
       onChanged();
     } catch (caught: any) {
-      setRowError(caught?.response?.data?.message ?? 'Failed to update booking');
+      setRowError(caught?.response?.data?.message ?? "Failed to update booking");
     } finally {
       setSubmitting(false);
     }
@@ -96,7 +169,7 @@ function BookingRow({
       await cancelBooking(booking.id);
       onChanged();
     } catch (caught: any) {
-      setRowError(caught?.response?.data?.message ?? 'Failed to cancel booking');
+      setRowError(caught?.response?.data?.message ?? "Failed to cancel booking");
     } finally {
       setSubmitting(false);
     }
@@ -107,7 +180,7 @@ function BookingRow({
       <div className={styles.bookingInfo}>
         <div className={styles.bookingTitle}>
           <strong>{booking.venue.title}</strong>
-          {booking.venue.address?.city ? ` — ${booking.venue.address.city}` : ''}
+          {booking.venue.address?.city ? ` — ${booking.venue.address.city}` : ""}
         </div>
         <div className={styles.bookingMeta}>
           From: {startDate} &nbsp; • &nbsp; To: {endDate}
@@ -132,7 +205,7 @@ function BookingRow({
           className={styles.input}
         />
         <button onClick={saveChanges} className={styles.primaryBtn} disabled={submitting}>
-          {submitting ? 'Saving…' : 'Save'}
+          {submitting ? "Saving…" : "Save"}
         </button>
         <button onClick={cancelReservation} className={styles.secondaryBtn} disabled={submitting}>
           Cancel

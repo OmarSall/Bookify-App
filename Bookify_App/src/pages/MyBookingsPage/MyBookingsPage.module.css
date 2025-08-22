@@ -152,6 +152,30 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.deleteAccountBox {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dangerBtn {
+    background: #fff0f0;
+    border: 1px solid #ffb3b3;
+    color: #b00020;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease;
+}
+
+.dangerBtn:hover {
+    background: #ffe1e1;
+    border-color: #ff9e9e;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
     .contentWrapper {
