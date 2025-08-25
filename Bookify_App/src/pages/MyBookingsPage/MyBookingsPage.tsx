@@ -186,7 +186,7 @@ function BookingRow({
           From: {startDate} &nbsp; • &nbsp; To: {endDate}
         </div>
         <div className={styles.bookingMeta}>
-          Total: €{Number(booking.totalPrice).toFixed(2)} &nbsp; • &nbsp; Status: {booking.status}
+          Total: {Math.round(Number(booking.totalPrice))} PLN &nbsp; • &nbsp; Status: {booking.status}
         </div>
         {rowError && <div className={styles.errorText}>{rowError}</div>}
       </div>

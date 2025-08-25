@@ -17,7 +17,7 @@ export default function StartHostingPage() {
     postalCode: '',
     albumId: 1,
     rating: 4.5,
-    featuresInput: '', // trzymamy tekst, rozbijemy przy submit
+    featuresInput: '',
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -103,7 +103,7 @@ export default function StartHostingPage() {
                   <div className={styles.sectionTitle}>Pricing & capacity</div>
                   <div className={styles.row}>
                     <div>
-                      <label className={styles.label} htmlFor="price">Price per night (EUR)</label>
+                      <label className={styles.label} htmlFor="price">Price per night (PLN)</label>
                       <input
                         id="price"
                         className={styles.input}

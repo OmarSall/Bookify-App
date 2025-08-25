@@ -1,0 +1,55 @@
+/* Root wrapper for the Autocomplete */
+.autocompleteRoot {
+    /* keep the same sizing as HeroSection .input */
+    width: auto;
+    min-width: 180px;
+    height: 42px;
+    z-index: 1000; /* above illustration */
+}
+
+/* Style the TextField rendered inside Autocomplete */
+.textField {
+    background-color: #fff;
+    border-radius: 999px;
+}
+
+/* Remove the black outline border from MUI OutlinedInput */
+.textField :global(.MuiOutlinedInput-root) {
+    border-radius: 999px;
+    height: 42px;               /* match pill height */
+    padding-left: 6px;          /* room for the icon */
+}
+
+.textField :global(.MuiOutlinedInput-notchedOutline) {
+    border: none;               /* no gray/black outline */
+}
+
+.textField :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+    border: none;               /* keep it borderless on hover */
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border: none;               /* and on focus */
+}
+
+/* Ensure browser focus outline is not shown on the <input> itself */
+.textField :global(input) {
+    outline: none;
+}
+
+/* Dropdown (listbox) styles */
+.listbox {
+    max-height: 240px;
+    padding: 4px 0;
+}
+
+/* Optional: paper (popup) radius/shadow for a soft look */
+:global(.MuiAutocomplete-popper) .paper {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Optional: tweak option spacing */
+:global(.MuiAutocomplete-option) {
+    padding: 8px 12px;
+}

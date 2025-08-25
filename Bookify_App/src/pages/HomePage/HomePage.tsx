@@ -1,24 +1,36 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./HomePage.module.css";
 
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
 import SortBar from "../../components/SortBar/SortBar";
-import VenueCard from '@/components/VenueCard';
+import VenueCard from "@/components/VenueCard";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 
-import { Box, Grid } from "@mui/material";
-import { useVenues, useCurrencyRate } from '@/customHooks';
+import Grid from "@mui/material/Grid";
+import { Box } from "@mui/material";
+import { useVenues, useCurrencyRate } from "@/customHooks";
 
 const HomePage = () => {
+  const [params] = useSearchParams();
+  const city = params.get("city") ?? undefined;
+
   const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const { venues, totalCount, availableFeatures, loading, error } = useVenues(page, venuesPerPage);
 
+  const filters = useMemo(() => ({ city }), [city]);
+
+  const {
+    venues,
+    totalCount,
+    availableFeatures,
+    loading,
+    error,
+  } = useVenues(page, venuesPerPage, filters);
 
   const handleCardClick = (venueId: number) => {
     navigate(`/venue/${venueId}`);
@@ -54,25 +66,37 @@ const HomePage = () => {
                 {!loading && rateLoading && <p>Converting prices...</p>}
                 {!loading && !error && (
                   <>
-                    <Grid container spacing={2} className={styles.venueGrid}>
-                      {venues.map((venue) => (
-                        <Grid item xs={12} sm={6} md={4} key={venue.id} {...({} as any)}>
-                          <VenueCard
-                            id={venue.id}
-                            isInitiallyFavourite={venue.isFavourite ?? false}
-                            title={venue.name}
-                            price={Math.round(venue.pricePerNightInEUR * (eurToPlnRate || 1))}
-                            location={venue.location.name ?? ""}
-                            rating={venue.rating ?? 0}
-                            capacity={venue.capacity}
-                            images={[
-                              `https://picsum.photos/seed/${(venue.albumId ?? 1)}a/400/300`,
-                              `https://picsum.photos/seed/${(venue.albumId ?? 1)}b/400/300`,
-                            ]}
-                            onClick={() => handleCardClick(venue.id)}
-                          />
-                        </Grid>
-                      ))}
+                    <Grid
+                      container
+                      columns={{ xs: 12, sm: 12, md: 12 }}
+                      spacing={2}
+                      className={styles.venueGrid}
+                      justifyContent={venues.length === 1 ? "center" : "flex-start"}
+                    >
+                      {
+                        venues.map((venue) => (
+                          <Grid key={venue.id}
+                                size={{ xs: 12, sm: venues.length === 1 ? 9 : 6, md: venues.length === 1 ? 9 : 4 }}>
+                            <VenueCard
+                              id={venue.id}
+                              isInitiallyFavourite={venue.isFavourite ?? false}
+                              title={venue.title ?? venue.name ?? "Venue"}
+                              price={Math.round(
+                                (venue.pricePerNightPLN ??
+                                  venue.pricePerNight ??
+                                  ((venue.pricePerNightInEUR ?? 0) * (eurToPlnRate || 1))) as number,
+                              )}
+                              location={venue.address?.city ?? venue.location?.name ?? ""}
+                              rating={typeof venue.rating === "number" ? venue.rating : 0}
+                              capacity={typeof venue.capacity === "number" ? venue.capacity : undefined}
+                              images={[
+                                `https://picsum.photos/seed/${(venue.albumId ?? 1)}a/400/300`,
+                                `https://picsum.photos/seed/${(venue.albumId ?? 1)}b/400/300`,
+                              ]}
+                              onClick={() => handleCardClick(venue.id)}
+                            />
+                          </Grid>
+                        ))}
                     </Grid>
 
                     <Box className={styles.paginationWrapper}>

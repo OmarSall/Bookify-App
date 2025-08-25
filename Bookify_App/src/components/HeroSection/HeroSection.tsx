@@ -1,5 +1,5 @@
 import styles from "./HeroSection.module.css";
-import {Box, Typography, Button} from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import TreeWithCouple from "../../assets/treeWithCouple.svg?react";
 import UpperOrnament from "../../assets/UpperOrnament.svg?react";
 import CustomInput from "../CustomInput";
@@ -7,84 +7,106 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SearchIcon from "@mui/icons-material/Search";
-import {InputAdornment} from "@mui/material";
+import { InputAdornment } from "@mui/material";
 import GuestsInput from "./GuestInput";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LocationAutocomplete from "./LocationAutocomplete";
 
 const HeroSection = () => {
-    return (
-        <Box className={styles.hero}>
-            <UpperOrnament className={styles.ornament}/>
-            <TreeWithCouple className={styles.illustration}/>
+  const [location, setLocation] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-            <Box className={styles.content}>
-                <div className={styles.heading}>
-                    Find your place and experience it together.
-                </div>
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (location && location.trim()) {
+      params.set("city", location.trim());
+    }
+    navigate({ pathname: "/", search: params.toString() });
+  };
 
-                <Box className={styles.inputGroup}>
-                    <CustomInput
-                        name="localization"
-                        placeholder="localization"
-                        className={styles.input}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <LocationOnIcon sx={{fontSize: 18, color: "#666"}}/>
-                                </InputAdornment>
-                            ),
-                        }}
+  return (
+    <Box className={styles.hero}>
+      <UpperOrnament className={styles.ornament} />
+      <TreeWithCouple className={styles.illustration} />
+
+      <Box className={styles.content}>
+        <div className={styles.heading}>
+          Find your place and experience it together.
+        </div>
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          handleSearch();
+        }}>
+          <Box className={styles.inputGroup}>
+            <CustomInput
+              name="localization"
+              placeholder="localization"
+              className={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LocationAutocomplete
+                      value={location ?? ""}
+                      onChange={setLocation}
+                      placeholder="localization"
                     />
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-                    <CustomInput
-                        name="occasion"
-                        placeholder="occasion"
-                        className={styles.input}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <CelebrationIcon sx={{fontSize: 18, color: "#666"}}/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+            <CustomInput
+              name="occasion"
+              placeholder="occasion"
+              className={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CelebrationIcon sx={{ fontSize: 18, color: "#666" }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-                    <CustomInput
-                        name="date"
-                        placeholder="date"
-                        className={styles.input}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <CalendarTodayIcon sx={{fontSize: 18, color: "#666"}}/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <GuestsInput/>
-                    <CustomInput
-                        name="venue"
-                        placeholder="venue type"
-                        className={styles.input}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon sx={{fontSize: 18, color: "#666"}}/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Box>
+            <CustomInput
+              name="date"
+              placeholder="date"
+              className={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CalendarTodayIcon sx={{ fontSize: 18, color: "#666" }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <GuestsInput />
+            <CustomInput
+              name="venue"
+              placeholder="venue type"
+              className={styles.input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ fontSize: 18, color: "#666" }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
 
-                <Typography className={styles.subtle}>
-                    I don't want to be that specific
-                </Typography>
+          <Typography className={styles.subtle}>
+            I don't want to be that specific
+          </Typography>
 
-                <Button variant="contained" className={styles.searchBtn}>
-                    Search for venue
-                </Button>
-            </Box>
-        </Box>
-    );
+          <Button type="submit" variant="contained" className={styles.searchBtn}>
+            Search for venue
+          </Button>
+        </form>
+      </Box>
+    </Box>
+  );
 };
 
 export default HeroSection;

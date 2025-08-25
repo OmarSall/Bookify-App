@@ -45,6 +45,7 @@
     margin-top: 2rem;
     align-items: center;
     padding-right: 13rem;
+    margin-left: 10rem !important;
 }
 
 .customPagination {

@@ -92,7 +92,16 @@
 
 .searchBtn {
     background-color: #4caf50 !important;
-    color: white !important;
+    color: white;
     border-radius: 999px !important;
     padding: 0.6rem 2rem !important;
+    margin-left: 29rem !important;
+    margin-top: 1rem !important;
+}
+
+.searchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
