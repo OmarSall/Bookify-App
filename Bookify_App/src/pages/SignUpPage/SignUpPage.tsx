@@ -6,21 +6,24 @@ import styles from './SignUpPage.module.css';
 
 export default function SignUpPage() {
   const nav = useNavigate();
-  const { setUser } = useAuth();
+  const { logout } = useAuth();
   const [form, setForm] = useState({ email: '', name: '', password: '' });
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
     setErr(null);
     setLoading(true);
     try {
-      const u = await signup(form);
-      setUser(u);
-      nav('/');
-    } catch (e: any) {
-      setErr(e?.response?.data?.message ?? 'Sign-up failed');
+      const user = await signup(form);
+      await logout();
+      nav('/login', {
+        state: { msg: 'Account created. Please log in.' },
+        replace: true,
+      });
+    } catch (error: any) {
+      setErr(error?.response?.data?.message ?? 'Sign-up failed');
     } finally {
       setLoading(false);
     }
