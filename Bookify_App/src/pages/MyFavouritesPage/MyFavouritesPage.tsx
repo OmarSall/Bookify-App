@@ -94,7 +94,7 @@ function FavouriteRow({
           {favourite.venue.address?.city ? ` — ${favourite.venue.address.city}` : ""}
         </div>
         <div className={styles.favouriteMeta}>
-          €{Number(favourite.venue.pricePerNight).toFixed(2)}
+          {Number(favourite.venue.pricePerNight)} PLN
           &nbsp; · &nbsp; ⭐ {favourite.venue.rating ?? "—"}
           &nbsp; · &nbsp; 👥 {favourite.venue.capacity}
         </div>

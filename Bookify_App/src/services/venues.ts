@@ -15,12 +15,20 @@ export type FetchVenuesParams = {
   city?: string;
   page?: number;
   perPage?: number;
+  priceMin?: number;
+  priceMax?: number;
 };
 
 export async function fetchVenues(params: FetchVenuesParams = {}) {
-  const { city, page = 1, perPage = 12 } = params;
+  const {
+    city,
+    page = 1,
+    perPage = 12,
+    priceMin,
+    priceMax,
+  } = params;
   const { data } = await http.get<VenuesListResponse>(ENDPOINTS.VENUES.LIST, {
-    params: { city, page, perPage },
+    params: { city, page, perPage, priceMin, priceMax },
   });
   return data;
 }

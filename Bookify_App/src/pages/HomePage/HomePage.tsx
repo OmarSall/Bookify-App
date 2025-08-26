@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./HomePage.module.css";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
@@ -10,19 +11,27 @@ import CustomPagination from "../../components/CustomPagination/CustomPagination
 
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
-import { useVenues, useCurrencyRate } from "@/customHooks";
+import { useVenues } from "@/customHooks";
 
 const HomePage = () => {
   const [params] = useSearchParams();
   const city = params.get("city") ?? undefined;
 
-  const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [uiPriceRange, setUiPriceRange] = useState<[number, number]>([0, 1000]);
 
-  const filters = useMemo(() => ({ city }), [city]);
+  useEffect(() => {
+    const id = setTimeout(() => setPriceRange(uiPriceRange), 250);
+    return () => clearTimeout(id);
+  }, [uiPriceRange]);
+
+  const filters = useMemo(
+    () => ({ city, priceMin: priceRange[0], priceMax: priceRange[1] }),
+    [city, priceRange],
+  );
 
   const {
     venues,
@@ -49,7 +58,7 @@ const HomePage = () => {
                   <FilterSidebar
                     availableFeatures={availableFeatures}
                     priceRange={priceRange}
-                    onPriceChange={(range) => setPriceRange([range[0], range[1]])}
+                    onPriceChange={(range) => setUiPriceRange([range[0], range[1]])}
                   />
                 )}
               </aside>
@@ -62,8 +71,8 @@ const HomePage = () => {
                     setPage(1);
                   }}
                 />
-                {(loading) && <p>Loading venues...</p>}
-                {!loading && rateLoading && <p>Converting prices...</p>}
+                {loading && <LinearProgress sx={{ mb: 2 }} />}
+                {error && <p style={{ color: 'crimson' }}>{error}</p>}
                 {!loading && !error && (
                   <>
                     <Grid
@@ -79,16 +88,11 @@ const HomePage = () => {
                                 size={{ xs: 12, sm: venues.length === 1 ? 9 : 6, md: venues.length === 1 ? 9 : 4 }}>
                             <VenueCard
                               id={venue.id}
-                              isInitiallyFavourite={venue.isFavourite ?? false}
                               title={venue.name}
-                              price={Math.round(
-                                (venue.pricePerNightPLN ??
-                                  venue.pricePerNight ??
-                                  ((venue.pricePerNightInEUR ?? 0) * (eurToPlnRate || 1))) as number,
-                              )}
+                              price={Math.round((venue.pricePerNight ?? 0))}
                               location={venue.location?.name ?? ""}
                               rating={typeof venue.rating === "number" ? venue.rating : 0}
-                              capacity={typeof venue.capacity === "number" ? venue.capacity : undefined}
+                              capacity={venue.capacity ?? 0}
                               images={[
                                 `https://picsum.photos/seed/${(venue.albumId ?? 1)}a/400/300`,
                                 `https://picsum.photos/seed/${(venue.albumId ?? 1)}b/400/300`,

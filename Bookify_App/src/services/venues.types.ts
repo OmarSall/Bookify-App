@@ -2,7 +2,7 @@ export type VenueCardDto = {
   id: number;
   name: string;
   location: { postalCode: string | null; name: string | null };
-  pricePerNightInEUR: number;
+  pricePerNight: number;
   rating: number | null;
   capacity: number;
   albumId: number | null;

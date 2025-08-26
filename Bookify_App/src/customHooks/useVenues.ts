@@ -4,6 +4,8 @@ import type { VenueCardDto } from "@/services/venues.types";
 
 type Filters = {
   city?: string;
+  priceMin?: number;
+  priceMax?: number;
 };
 
 function normalizeFeatures(rawFeaturesInput: any): string[] {
@@ -41,6 +43,8 @@ export default function useVenues(
           city: filters.city,
           page,
           perPage,
+          priceMin: filters.priceMin,
+          priceMax: filters.priceMax,
         });
 
         if (!isMounted) {
@@ -73,7 +77,7 @@ export default function useVenues(
     return () => {
       isMounted = false;
     };
-  }, [page, perPage, filters?.city]);
+  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax]);
 
   const availableFeatures = useMemo(() => {
     const uniqueFeaturesSet = new Set<string>();

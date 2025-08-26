@@ -55,7 +55,6 @@ export default function BookingCard({ pricePerNight, venueId, onBooked }: Bookin
     );
   }
 
-  // Z venueId — cena + formularz
   return (
     <div className={styles.card}>
       <div className={styles.priceRow}>

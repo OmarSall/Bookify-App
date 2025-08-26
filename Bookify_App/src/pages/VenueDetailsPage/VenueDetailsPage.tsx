@@ -18,11 +18,7 @@ const VenueDetailsPage = () => {
 
   const venueId = Number(id);
   const { venueDetails, loading, error } = useVenueDetails(venueId);
-  const { rate: eurToPlnRate, loading: rateLoading } = useCurrencyRate();
 
-  if (loading || rateLoading) {
-    return <p>Loading...</p>;
-  }
   if (error || !venueDetails) {
     return <p>Error loading venue details.</p>;
   }
@@ -33,8 +29,8 @@ const VenueDetailsPage = () => {
     `https://picsum.photos/seed/${venueDetails.albumId}c/800/400`,
   ];
 
-  const priceInPln = +(
-    venueDetails.pricePerNightInEUR * (eurToPlnRate || 1)
+  const pricePerNight = +(
+    venueDetails.pricePerNight
   ).toFixed(0);
 
   return (
@@ -53,7 +49,7 @@ const VenueDetailsPage = () => {
           />
         </div>
         <div className={styles.rightColumn}>
-          <BookingCard pricePerNight={priceInPln} venueId={venueId} />
+          <BookingCard pricePerNight={pricePerNight} venueId={venueId} />
           <ContactDetails contact={venueDetails.contactDetails} />
           <div className={styles.social}>
             <Typography variant="subtitle1" className={styles.socialTitle}>
