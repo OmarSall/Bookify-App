@@ -80,13 +80,13 @@ const HomePage = () => {
                             <VenueCard
                               id={venue.id}
                               isInitiallyFavourite={venue.isFavourite ?? false}
-                              title={venue.title ?? venue.name ?? "Venue"}
+                              title={venue.name}
                               price={Math.round(
                                 (venue.pricePerNightPLN ??
                                   venue.pricePerNight ??
                                   ((venue.pricePerNightInEUR ?? 0) * (eurToPlnRate || 1))) as number,
                               )}
-                              location={venue.address?.city ?? venue.location?.name ?? ""}
+                              location={venue.location?.name ?? ""}
                               rating={typeof venue.rating === "number" ? venue.rating : 0}
                               capacity={typeof venue.capacity === "number" ? venue.capacity : undefined}
                               images={[

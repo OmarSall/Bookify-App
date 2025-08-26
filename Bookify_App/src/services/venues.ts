@@ -1,20 +1,27 @@
 import { http } from "@/lib/http";
 import { ENDPOINTS } from "@/constants/api";
-import type { VenueDetailsDto, CreateVenuePayload } from './venues.types';
+import type {
+  VenueDetailsDto,
+  CreateVenuePayload,
+  VenueCardDto,
+} from "./venues.types";
 
-export type VenueCardDto = {
-  id: number;
-  title: string;
-  features: string[];
-  address?: { city?: string | null } | null;
+export type VenuesListResponse = {
+  items: VenueCardDto[];
+  totalCount: number;
 };
 
-type FetchVenuesParams = {
+export type FetchVenuesParams = {
   city?: string;
+  page?: number;
+  perPage?: number;
 };
 
-export async function fetchVenues(params?: FetchVenuesParams) {
-  const { data } = await http.get<VenueCardDto[]>(ENDPOINTS.VENUES.LIST, { params });
+export async function fetchVenues(params: FetchVenuesParams = {}) {
+  const { city, page = 1, perPage = 12 } = params;
+  const { data } = await http.get<VenuesListResponse>(ENDPOINTS.VENUES.LIST, {
+    params: { city, page, perPage },
+  });
   return data;
 }
 
@@ -29,8 +36,7 @@ export async function createVenue(payload: CreateVenuePayload) {
 }
 
 export async function getVenueLocations(): Promise<string[]> {
-  const LOCATIONS_URL =
-    (ENDPOINTS as any)?.VENUES?.LOCATIONS ?? "/venues/locations";
-  const { data } = await http.get<string[]>(LOCATIONS_URL);
+  const url = (ENDPOINTS as any)?.VENUES?.LOCATIONS ?? "/venues/locations";
+  const { data } = await http.get<string[]>(url);
   return data;
 }

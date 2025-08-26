@@ -14,10 +14,6 @@ function normalizeText(text: string) {
     .trim();
 }
 
-/**
- * Score how well one location option matches the user's query.
- * Higher score = better match. -1 means "no match".
- */
 function rankLocationMatch(queryRaw: string, optionRaw: string) {
   const normalizedQuery = normalizeText(queryRaw);
   const normalizedOption = normalizeText(optionRaw);
@@ -77,7 +73,7 @@ export default function LocationAutocomplete({
       try {
         setLoadingLocations(true);
         const locations = await getVenueLocations();
-        console.log("[locations]", locations); // debug: should be an array of strings
+        console.log("[locations]", locations);
         if (isMounted) {
           setAllLocations(locations);
         }
