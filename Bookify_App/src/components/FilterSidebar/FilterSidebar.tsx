@@ -21,14 +21,17 @@ type FilterSidebarProps = {
   availableFeatures: string[];
   priceRange: [number, number];
   onPriceChange: (value: [number, number]) => void;
+  selectedFeatures: string[];
+  onSelectedFeaturesChange: (value: string[]) => void;
 };
 
 const FilterSidebar = ({
                          availableFeatures,
                          priceRange,
                          onPriceChange,
+                         selectedFeatures,
+                         onSelectedFeaturesChange,
                        }: FilterSidebarProps) => {
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
   const [localRange, setLocalRange] = useState<[number, number]>(priceRange);
 
@@ -68,7 +71,7 @@ const FilterSidebar = ({
   }, [availableFeatures]);
 
   const handleReset = () => {
-    setSelectedFeatures([]);
+    onSelectedFeaturesChange([]);
     onPriceChange([0, 1000]);
   };
 
@@ -80,10 +83,10 @@ const FilterSidebar = ({
           <Checkbox
             checked={selectedFeatures.includes(feature)}
             onChange={(event) => {
-              const updated = event.target.checked
+              const next = event.target.checked
                 ? [...selectedFeatures, feature]
                 : selectedFeatures.filter((selectedFeature) => selectedFeature !== feature);
-              setSelectedFeatures(updated);
+              onSelectedFeaturesChange(next);
             }}
           />
         }

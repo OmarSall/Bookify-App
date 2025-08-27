@@ -117,7 +117,7 @@ const VenueCard: React.FC<VenueCardProps> = ({
 
           <div className={styles.titleBanner}>{title}</div>
           <div className={styles.bottomOverlay}>
-            <div className={styles.price}>{Math.round(price)} zł / doba</div>
+            <div className={styles.price}>{Math.round(price)} PLN / night</div>
             <div className={styles.location}>
               <LocationOnIcon fontSize="small" />
               {location}

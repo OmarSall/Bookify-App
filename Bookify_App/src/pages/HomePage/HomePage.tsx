@@ -5,7 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
-import SortBar from "../../components/SortBar/SortBar";
+import SortBar, { SortValue } from "../../components/SortBar/SortBar";
 import VenueCard from "@/components/VenueCard";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 
@@ -21,17 +21,45 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const [uiPriceRange, setUiPriceRange] = useState<[number, number]>([0, 1000]);
+  const [sort, setSort] = useState<SortValue>("newest");
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
-  useEffect(() => {
-    const id = setTimeout(() => setPriceRange(uiPriceRange), 250);
-    return () => clearTimeout(id);
-  }, [uiPriceRange]);
+
+  const sortApi = useMemo(() => {
+    switch (sort) {
+      case "price_asc":
+        return { sortBy: "price", sortDir: "asc" } as const;
+      case "price_desc":
+        return { sortBy: "price", sortDir: "desc" } as const;
+      case "rating_desc":
+        return { sortBy: "rating", sortDir: "desc" } as const;
+      case "rating_asc":
+        return { sortBy: "rating", sortDir: "asc" } as const;
+      case "capacity_desc":
+        return { sortBy: "capacity", sortDir: "desc" } as const;
+      case "capacity_asc":
+        return { sortBy: "capacity", sortDir: "asc" } as const;
+      case "oldest":
+        return { sortBy: "createdAt" as const, sortDir: "asc" as const };
+      case "newest":
+      default:
+        return { sortBy: "createdAt", sortDir: "desc" } as const;
+    }
+  }, [sort]);
 
   const filters = useMemo(
-    () => ({ city, priceMin: priceRange[0], priceMax: priceRange[1] }),
-    [city, priceRange],
+    () => ({
+      city,
+      priceMin: priceRange[0],
+      priceMax: priceRange[1],
+      sortBy: sortApi.sortBy,
+      sortDir: sortApi.sortDir,
+      features: selectedFeatures,
+    }),
+    [city, priceRange, sortApi, selectedFeatures],
   );
+
+  useEffect(() => { setPage(1); }, [city, selectedFeatures, priceRange, sortApi]);
 
   const {
     venues,
@@ -58,7 +86,9 @@ const HomePage = () => {
                   <FilterSidebar
                     availableFeatures={availableFeatures}
                     priceRange={priceRange}
-                    onPriceChange={(range) => setUiPriceRange([range[0], range[1]])}
+                    onPriceChange={(range) => setPriceRange([range[0], range[1]])}
+                    selectedFeatures={selectedFeatures}
+                    onSelectedFeaturesChange={(next) => setSelectedFeatures(next)}
                   />
                 )}
               </aside>
@@ -70,9 +100,14 @@ const HomePage = () => {
                     setVenuesPerPage(val);
                     setPage(1);
                   }}
+                  sort={sort}
+                  onSortChange={(val) => {
+                    setSort(val);
+                    setPage(1);
+                  }}
                 />
                 {loading && <LinearProgress sx={{ mb: 2 }} />}
-                {error && <p style={{ color: 'crimson' }}>{error}</p>}
+                {error && <p style={{ color: "crimson" }}>{error}</p>}
                 {!loading && !error && (
                   <>
                     <Grid
@@ -88,6 +123,7 @@ const HomePage = () => {
                                 size={{ xs: 12, sm: venues.length === 1 ? 9 : 6, md: venues.length === 1 ? 9 : 4 }}>
                             <VenueCard
                               id={venue.id}
+                              isInitiallyFavourite={venue.isFavourite ?? false}
                               title={venue.name}
                               price={Math.round((venue.pricePerNight ?? 0))}
                               location={venue.location?.name ?? ""}

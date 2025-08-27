@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchVenues } from "@/services/venues";
+import { getMyFavouriteIds } from "@/services/favourites";
+import { useAuth } from "@/services/auth/AuthContext";
 import type { VenueCardDto } from "@/services/venues.types";
 
 type Filters = {
   city?: string;
   priceMin?: number;
   priceMax?: number;
+  sortBy?: "price" | "rating" | "capacity" | "createdAt" | "title";
+  sortDir?: "asc" | "desc";
+  features?: string[];
 };
 
 function normalizeFeatures(rawFeaturesInput: any): string[] {
@@ -27,6 +32,7 @@ export default function useVenues(
   perPage: number,
   filters: Filters = {},
 ) {
+  const { user } = useAuth();
   const [venueItems, setVenueItems] = useState<VenueCardDto[]>([]);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,27 +45,34 @@ export default function useVenues(
       try {
         setIsLoading(true);
 
-        const { items: apiItems, totalCount: apiTotalCount } = await fetchVenues({
-          city: filters.city,
-          page,
-          perPage,
-          priceMin: filters.priceMin,
-          priceMax: filters.priceMax,
-        });
+        const [listResp, favouriteIds] = await Promise.all([
+          fetchVenues({
+            city: filters.city,
+            page,
+            perPage,
+            priceMin: filters.priceMin,
+            priceMax: filters.priceMax,
+            sortBy: filters.sortBy,
+            sortDir: filters.sortDir,
+            features: filters.features,
+          }),
+          user ? getMyFavouriteIds().catch(() => []) : Promise.resolve<number[]>([]),
+        ]);
 
         if (!isMounted) {
           return;
         }
-
-        const normalizedItems = (apiItems ?? []).map((venue: any) => ({
+        const favouriteIdSet = new Set<number>(favouriteIds ?? []);
+        const normalizedItems = (listResp.items ?? []).map((venue: any) => ({
           ...venue,
           features: normalizeFeatures(
             (venue as any).features ?? (venue as any).venueFeatures ?? [],
           ),
+          isFavourite: favouriteIdSet.has(venue.id),
         }));
 
         setVenueItems(normalizedItems as VenueCardDto[]);
-        setTotalItemsCount(Number(apiTotalCount ?? normalizedItems.length));
+        setTotalItemsCount(Number(listResp.totalCount ?? normalizedItems.length));
         setLoadError(null);
       } catch (errorCaught: any) {
         if (!isMounted) {
@@ -77,7 +90,7 @@ export default function useVenues(
     return () => {
       isMounted = false;
     };
-  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax]);
+  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features]);
 
   const availableFeatures = useMemo(() => {
     const uniqueFeaturesSet = new Set<string>();

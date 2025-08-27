@@ -7,6 +7,7 @@ export type VenueCardDto = {
   capacity: number;
   albumId: number | null;
   features: string[];
+  isFavourite: boolean;
 };
 
 export type VenueDetailsDto = VenueCardDto & {

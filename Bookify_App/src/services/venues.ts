@@ -17,6 +17,9 @@ export type FetchVenuesParams = {
   perPage?: number;
   priceMin?: number;
   priceMax?: number;
+  sortBy?: "price" | "rating" | "capacity" | "createdAt" | "title";
+  sortDir?: "asc" | "desc";
+  features?: string[];
 };
 
 export async function fetchVenues(params: FetchVenuesParams = {}) {
@@ -26,9 +29,27 @@ export async function fetchVenues(params: FetchVenuesParams = {}) {
     perPage = 12,
     priceMin,
     priceMax,
+    sortBy,
+    sortDir,
+    features,
   } = params;
   const { data } = await http.get<VenuesListResponse>(ENDPOINTS.VENUES.LIST, {
-    params: { city, page, perPage, priceMin, priceMax },
+    params: { city, page, perPage, priceMin, priceMax, sortBy, sortDir, features },
+    paramsSerializer: {
+      serialize: (parameter) => {
+        const usp = new URLSearchParams();
+        Object.entries(parameter).forEach(([key, val]) => {
+          if (val === undefined || val === null) return;
+          if (Array.isArray(val)) {
+            // => features=WiFi&features=parking
+            val.forEach((v) => usp.append(key, String(v)));
+          } else {
+            usp.append(key, String(val));
+          }
+        });
+        return usp.toString();
+      },
+    },
   });
   return data;
 }
