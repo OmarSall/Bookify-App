@@ -22,6 +22,8 @@ export type FetchVenuesParams = {
   sortDir?: "asc" | "desc";
   features?: string[];
   type?: VenueType;
+  startDate?: string; // YYYY-MM-DD
+  endDate?: string;   // YYYY-MM-DD
 };
 
 export async function fetchVenues(params: FetchVenuesParams = {}) {
@@ -35,9 +37,11 @@ export async function fetchVenues(params: FetchVenuesParams = {}) {
     sortDir,
     features,
     type,
+    startDate,
+    endDate,
   } = params;
   const { data } = await http.get<VenuesListResponse>(ENDPOINTS.VENUES.LIST, {
-    params: { city, page, perPage, priceMin, priceMax, sortBy, sortDir, features, type },
+    params: { city, page, perPage, priceMin, priceMax, sortBy, sortDir, features, type, startDate, endDate },
     paramsSerializer: {
       serialize: (parameter) => {
         const usp = new URLSearchParams();

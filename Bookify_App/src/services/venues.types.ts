@@ -1,3 +1,5 @@
+export type AvailabilityStatus = "available" | "booked" | "booked_by_me" | "unknown";
+
 export type VenueCardDto = {
   id: number;
   name: string;
@@ -8,6 +10,7 @@ export type VenueCardDto = {
   albumId: number | null;
   features: string[];
   isFavourite: boolean;
+  availabilityStatus?: AvailabilityStatus;
 };
 
 export type VenueDetailsDto = VenueCardDto & {
@@ -33,6 +36,8 @@ export type CreateVenuePayload = {
   albumId?: number;
   rating?: number;
   features: string[];
+  startDate?: string;
+  endDate?: string;
 };
 
 export type VenueType = 'studio' | 'apartment' | 'house' | 'villa';

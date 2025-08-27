@@ -18,6 +18,8 @@ const HomePage = () => {
   const [params] = useSearchParams();
   const city = params.get("city") ?? undefined;
   const rawType = params.get("type") ?? undefined;
+  const startDate = params.get("startDate") ?? undefined;
+  const endDate = params.get("endDate") ?? undefined;
   const type: VenueType | undefined = isVenueType(rawType) ? rawType : undefined;
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
@@ -61,11 +63,15 @@ const HomePage = () => {
       sortBy: sortApi.sortBy,
       sortDir: sortApi.sortDir,
       features: selectedFeatures,
+      startDate,
+      endDate,
     }),
-    [city, type, priceRange, sortApi, selectedFeatures],
+    [city, type, priceRange, sortApi, selectedFeatures, startDate, endDate],
   );
 
-  useEffect(() => { setPage(1); }, [city, selectedFeatures, priceRange, sortApi]);
+  useEffect(() => {
+    setPage(1);
+  }, [city, selectedFeatures, priceRange, sortApi, startDate, endDate]);
 
   const {
     venues,
@@ -140,6 +146,10 @@ const HomePage = () => {
                                 `https://picsum.photos/seed/${(venue.albumId ?? 1)}b/400/300`,
                               ]}
                               onClick={() => handleCardClick(venue.id)}
+                              dimmed={
+                                venue.availabilityStatus === "booked" ||
+                                venue.availabilityStatus === "booked_by_me"
+                              }
                             />
                           </Grid>
                         ))}

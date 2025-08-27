@@ -20,6 +20,7 @@ const VenueCard: React.FC<VenueCardProps> = ({
                                                isInitiallyFavourite = false,
                                                onClick,
                                                onFavouriteToggled,
+                                               dimmed,
                                              }) => {
   const { user } = useAuth();
   const [isFavourite, setIsFavourite] = useState<boolean>(isInitiallyFavourite);
@@ -73,7 +74,7 @@ const VenueCard: React.FC<VenueCardProps> = ({
   );
 
   return (
-    <div className={styles.card} onClick={onClick}>
+    <div className={`${styles.card} ${dimmed ? styles.dimmed : ""}`} onClick={onClick}>
       <div className={styles.imageWrapper}>
         <img
           src={images[currentImage]}

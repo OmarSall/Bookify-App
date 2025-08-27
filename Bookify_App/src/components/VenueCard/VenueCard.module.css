@@ -22,6 +22,11 @@
     width: 100%;
 }
 
+.dimmed {
+    opacity: 0.5;
+    filter: grayscale(0.3);
+}
+
 .imageWrapper {
     position: relative;
     width: 100%;

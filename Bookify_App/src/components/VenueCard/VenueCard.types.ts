@@ -9,4 +9,5 @@ export type VenueCardProps = {
   isInitiallyFavourite?: boolean;
   onClick?: () => void;
   onFavouriteToggled?: (next: boolean) => void;
+  dimmed?: boolean;
 };

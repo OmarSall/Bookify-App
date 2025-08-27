@@ -3,22 +3,23 @@ import { Box, Typography, Button, InputAdornment, Autocomplete, TextField } from
 import TreeWithCouple from "../../assets/treeWithCouple.svg?react";
 import UpperOrnament from "../../assets/UpperOrnament.svg?react";
 import CustomInput from "../CustomInput";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import SearchIcon from "@mui/icons-material/Search";
 import GuestsInput from "./GuestInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LocationAutocomplete from "./LocationAutocomplete";
 import type { VenueType } from "@/services/venues.types";
 import TypeAutocomplete from "./TypeAutocomplete";
+import DateRangeInput from "./DateRangeInput";
 
 
 const HeroSection = () => {
   const [location, setLocation] = useState<string | null>(null);
   const navigate = useNavigate();
   const [venueType, setVenueType] = useState<VenueType | "">("");
+  const [startDate, setStartDate] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -27,6 +28,12 @@ const HeroSection = () => {
     }
     if (venueType) {
       params.set("type", venueType);
+    }
+    if (startDate) {
+      params.set("startDate", startDate);
+    }
+    if (endDate) {
+      params.set("endDate", endDate);
     }
     navigate({ pathname: "/", search: params.toString() });
   };
@@ -75,18 +82,16 @@ const HeroSection = () => {
               }}
             />
 
-            <CustomInput
-              name="date"
-              placeholder="date"
-              className={styles.input}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <CalendarTodayIcon sx={{ fontSize: 18, color: "#666" }} />
-                  </InputAdornment>
-                ),
+            <DateRangeInput
+              start={startDate}
+              end={endDate}
+              onChange={(s, e) => {
+                setStartDate(s);
+                setEndDate(e);
               }}
+              placeholder="date"
             />
+
             <GuestsInput />
 
             <CustomInput

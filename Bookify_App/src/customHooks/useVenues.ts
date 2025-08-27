@@ -12,6 +12,8 @@ type Filters = {
   sortBy?: "price" | "rating" | "capacity" | "createdAt" | "title";
   sortDir?: "asc" | "desc";
   features?: string[];
+  startDate?: string; // YYYY-MM-DD
+  endDate?: string;   // YYYY-MM-DD
 };
 
 function normalizeFeatures(rawFeaturesInput: any): string[] {
@@ -57,6 +59,8 @@ export default function useVenues(
             sortBy: filters.sortBy,
             sortDir: filters.sortDir,
             features: filters.features,
+            startDate: filters.startDate,
+            endDate: filters.endDate,
           }),
           user ? getMyFavouriteIds().catch(() => []) : Promise.resolve<number[]>([]),
         ]);
@@ -85,14 +89,16 @@ export default function useVenues(
         setVenueItems([]);
         setTotalItemsCount(0);
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     })();
 
     return () => {
       isMounted = false;
     };
-  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features, filters.type]);
+  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features, filters.type, filters.startDate, filters.endDate]);
 
   const availableFeatures = useMemo(() => {
     const uniqueFeaturesSet = new Set<string>();
