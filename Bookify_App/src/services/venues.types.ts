@@ -34,3 +34,5 @@ export type CreateVenuePayload = {
   rating?: number;
   features: string[];
 };
+
+export type VenueType = 'studio' | 'apartment' | 'house' | 'villa';

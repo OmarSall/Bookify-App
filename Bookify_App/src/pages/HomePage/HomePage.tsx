@@ -12,11 +12,13 @@ import CustomPagination from "../../components/CustomPagination/CustomPagination
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
 import { useVenues } from "@/customHooks";
+import type { VenueType } from "@/services/venues.types";
 
 const HomePage = () => {
   const [params] = useSearchParams();
   const city = params.get("city") ?? undefined;
-
+  const rawType = params.get("type") ?? undefined;
+  const type: VenueType | undefined = isVenueType(rawType) ? rawType : undefined;
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
@@ -24,6 +26,9 @@ const HomePage = () => {
   const [sort, setSort] = useState<SortValue>("newest");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
+  function isVenueType(x: unknown): x is VenueType {
+    return x === "studio" || x === "apartment" || x === "house" || x === "villa";
+  }
 
   const sortApi = useMemo(() => {
     switch (sort) {
@@ -50,13 +55,14 @@ const HomePage = () => {
   const filters = useMemo(
     () => ({
       city,
+      type,
       priceMin: priceRange[0],
       priceMax: priceRange[1],
       sortBy: sortApi.sortBy,
       sortDir: sortApi.sortDir,
       features: selectedFeatures,
     }),
-    [city, priceRange, sortApi, selectedFeatures],
+    [city, type, priceRange, sortApi, selectedFeatures],
   );
 
   useEffect(() => { setPage(1); }, [city, selectedFeatures, priceRange, sortApi]);

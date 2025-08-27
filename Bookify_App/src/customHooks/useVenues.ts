@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { fetchVenues } from "@/services/venues";
 import { getMyFavouriteIds } from "@/services/favourites";
 import { useAuth } from "@/services/auth/AuthContext";
-import type { VenueCardDto } from "@/services/venues.types";
+import type { VenueCardDto, VenueType } from "@/services/venues.types";
 
 type Filters = {
   city?: string;
+  type?: VenueType;
   priceMin?: number;
   priceMax?: number;
   sortBy?: "price" | "rating" | "capacity" | "createdAt" | "title";
@@ -48,6 +49,7 @@ export default function useVenues(
         const [listResp, favouriteIds] = await Promise.all([
           fetchVenues({
             city: filters.city,
+            type: filters.type,
             page,
             perPage,
             priceMin: filters.priceMin,
@@ -90,7 +92,7 @@ export default function useVenues(
     return () => {
       isMounted = false;
     };
-  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features]);
+  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features, filters.type]);
 
   const availableFeatures = useMemo(() => {
     const uniqueFeaturesSet = new Set<string>();

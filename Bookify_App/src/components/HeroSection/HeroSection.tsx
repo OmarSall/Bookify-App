@@ -1,5 +1,5 @@
 import styles from "./HeroSection.module.css";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, InputAdornment, Autocomplete, TextField } from "@mui/material";
 import TreeWithCouple from "../../assets/treeWithCouple.svg?react";
 import UpperOrnament from "../../assets/UpperOrnament.svg?react";
 import CustomInput from "../CustomInput";
@@ -7,20 +7,26 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment } from "@mui/material";
 import GuestsInput from "./GuestInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LocationAutocomplete from "./LocationAutocomplete";
+import type { VenueType } from "@/services/venues.types";
+import TypeAutocomplete from "./TypeAutocomplete";
+
 
 const HeroSection = () => {
   const [location, setLocation] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [venueType, setVenueType] = useState<VenueType | "">("");
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (location && location.trim()) {
       params.set("city", location.trim());
+    }
+    if (venueType) {
+      params.set("type", venueType);
     }
     navigate({ pathname: "/", search: params.toString() });
   };
@@ -82,14 +88,20 @@ const HeroSection = () => {
               }}
             />
             <GuestsInput />
+
             <CustomInput
               name="venue"
               placeholder="venue type"
               className={styles.input}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ fontSize: 18, color: "#666" }} />
+                  <InputAdornment position="start" sx={{ gap: 1 }}>
+
+                    <TypeAutocomplete
+                      value={venueType}
+                      onChange={setVenueType}
+                      placeholder="venue type"
+                    />
                   </InputAdornment>
                 ),
               }}
