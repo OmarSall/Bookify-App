@@ -11,6 +11,7 @@ import RequireAuth from './components/RequireAuth';
 import StartHostingPage from './pages/StartHostingPage/StartHostingPage';
 import MyBookingsPage from './pages/MyBookingsPage/MyBookingsPage';
 import MyFavouritesPage from './pages/MyFavouritesPage/MyFavouritesPage';
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/venue/:id" element={<VenueDetailsPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/start-hosting" element={<RequireAuth><StartHostingPage /></RequireAuth>} />
               <Route path="/my-bookings" element={<RequireAuth><MyBookingsPage /></RequireAuth>} />
               <Route path="/my-favourites" element={<RequireAuth><MyFavouritesPage /></RequireAuth>} />
