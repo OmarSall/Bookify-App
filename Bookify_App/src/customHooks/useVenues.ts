@@ -14,6 +14,7 @@ type Filters = {
   features?: string[];
   startDate?: string; // YYYY-MM-DD
   endDate?: string;   // YYYY-MM-DD
+  guests?: number;
 };
 
 function normalizeFeatures(rawFeaturesInput: any): string[] {
@@ -61,6 +62,7 @@ export default function useVenues(
             features: filters.features,
             startDate: filters.startDate,
             endDate: filters.endDate,
+            guests: filters.guests,
           }),
           user ? getMyFavouriteIds().catch(() => []) : Promise.resolve<number[]>([]),
         ]);
@@ -98,7 +100,21 @@ export default function useVenues(
     return () => {
       isMounted = false;
     };
-  }, [page, perPage, filters?.city, filters.priceMin, filters.priceMax, filters.sortBy, filters.sortDir, user?.id, filters.features, filters.type, filters.startDate, filters.endDate]);
+  }, [
+    page,
+    perPage,
+    filters?.city,
+    filters.priceMin,
+    filters.priceMax,
+    filters.sortBy,
+    filters.sortDir,
+    user?.id,
+    filters.features,
+    filters.type,
+    filters.startDate,
+    filters.endDate,
+    filters.guests,
+  ]);
 
   const availableFeatures = useMemo(() => {
     const uniqueFeaturesSet = new Set<string>();

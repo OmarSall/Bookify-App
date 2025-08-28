@@ -20,7 +20,11 @@ const HomePage = () => {
   const rawType = params.get("type") ?? undefined;
   const startDate = params.get("startDate") ?? undefined;
   const endDate = params.get("endDate") ?? undefined;
+  const guestsRaw = params.get("guests");
+
   const type: VenueType | undefined = isVenueType(rawType) ? rawType : undefined;
+  const guests = guestsRaw ? Math.max(1, parseInt(guestsRaw, 10) || 0) : undefined;
+
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
@@ -65,13 +69,14 @@ const HomePage = () => {
       features: selectedFeatures,
       startDate,
       endDate,
+      guests,
     }),
-    [city, type, priceRange, sortApi, selectedFeatures, startDate, endDate],
+    [city, type, priceRange, sortApi, selectedFeatures, startDate, endDate, guests],
   );
 
   useEffect(() => {
     setPage(1);
-  }, [city, selectedFeatures, priceRange, sortApi, startDate, endDate]);
+  }, [city, selectedFeatures, priceRange, sortApi, startDate, endDate, guests]);
 
   const {
     venues,

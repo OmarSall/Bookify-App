@@ -20,6 +20,7 @@ const HeroSection = () => {
   const [venueType, setVenueType] = useState<VenueType | "">("");
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
+  const [guests, setGuests] = useState<number>(0);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -34,6 +35,9 @@ const HeroSection = () => {
     }
     if (endDate) {
       params.set("endDate", endDate);
+    }
+    if (guests && guests > 0) {
+      params.set("guests", String(guests));
     }
     navigate({ pathname: "/", search: params.toString() });
   };
@@ -92,7 +96,7 @@ const HeroSection = () => {
               placeholder="date"
             />
 
-            <GuestsInput />
+            <GuestsInput value={guests} onChange={setGuests} />
 
             <CustomInput
               name="venue"
