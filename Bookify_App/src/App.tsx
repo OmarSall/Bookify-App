@@ -7,10 +7,10 @@ import VenueDetailsPage from "./pages/VenueDetailsPage/VenueDetailsPage";
 import { AuthProvider } from "./services/auth/AuthContext";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
-import RequireAuth from './components/RequireAuth';
-import StartHostingPage from './pages/StartHostingPage/StartHostingPage';
-import MyBookingsPage from './pages/MyBookingsPage/MyBookingsPage';
-import MyFavouritesPage from './pages/MyFavouritesPage/MyFavouritesPage';
+import RequireAuth from "./components/RequireAuth";
+import StartHostingPage from "./pages/StartHostingPage/StartHostingPage";
+import MyBookingsPage from "./pages/MyBookingsPage/MyBookingsPage";
+import MyFavouritesPage from "./pages/MyFavouritesPage/MyFavouritesPage";
 import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
@@ -23,13 +23,15 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/venue/:id" element={<VenueDetailsPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/start-hosting" element={<RequireAuth><StartHostingPage /></RequireAuth>} />
-              <Route path="/my-bookings" element={<RequireAuth><MyBookingsPage /></RequireAuth>} />
-              <Route path="/my-favourites" element={<RequireAuth><MyFavouritesPage /></RequireAuth>} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
+              <Route element={<RequireAuth />}>
+                <Route path="/my-bookings" element={<MyBookingsPage />} />
+                <Route path="/my-favourites" element={<MyFavouritesPage />} />
+                <Route path="/start-hosting" element={<StartHostingPage />} />
+              </Route>
+              <Route path="/venue/:id" element={<VenueDetailsPage />} />
             </Routes>
           </main>
           <Footer />

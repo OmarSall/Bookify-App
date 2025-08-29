@@ -73,7 +73,6 @@ export default function StartHostingPage() {
               {error && <div className={styles.errorText}>{error}</div>}
 
               <form className={styles.form} onSubmit={onSubmit} noValidate>
-                {/* Basic info */}
                 <div>
                   <div className={styles.section}>
                     <div className={styles.sectionTitle}>Basic information</div>
@@ -100,7 +99,6 @@ export default function StartHostingPage() {
                   </div>
                 </div>
 
-                {/* Pricing / Capacity */}
                 <div>
                   <div className={styles.section}>
                     <div className={styles.sectionTitle}>Pricing & capacity</div>
@@ -134,7 +132,6 @@ export default function StartHostingPage() {
                   </div>
                 </div>
 
-                {/* Address */}
                 <div>
                   <div className={styles.section}>
                     <div className={styles.sectionTitle}>Address</div>
@@ -185,7 +182,6 @@ export default function StartHostingPage() {
                   />
                 </div>
 
-                {/* Optional */}
                 <div>
                   <div className={styles.section}>
                     <div className={styles.sectionTitle}>Optional</div>

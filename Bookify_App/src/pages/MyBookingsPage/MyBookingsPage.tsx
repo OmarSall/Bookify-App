@@ -37,15 +37,12 @@ export default function MyBookingsPage() {
       setDeleting(true);
       setDeleteError(null);
 
-      // Call backend (uses axios http with credentials)
       await users.deleteSelf();
 
-      // Clear auth state
       if (typeof logout === "function") {
         await logout();
       }
 
-      // Close dialog and redirect home
       setConfirmOpen(false);
       navigate("/", { replace: true });
     } catch (error: any) {
@@ -92,7 +89,6 @@ export default function MyBookingsPage() {
                   <BookingRow key={booking.id} booking={booking} onChanged={loadBookings} />
                 ))}
               </div>
-              {/* Account deletion section */}
               <div className={styles.deleteAccountBox}>
                 {deleteError && <div className={styles.errorText}>{deleteError}</div>}
 
@@ -106,7 +102,6 @@ export default function MyBookingsPage() {
                 </button>
               </div>
 
-              {/* Confirmation dialog (MUI) */}
               <ConfirmDialog
                 open={confirmOpen}
                 onClose={closeConfirm}

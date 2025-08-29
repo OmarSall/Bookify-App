@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { fetchVenueById, type VenueDetailsDto } from '../services/venues';
+import { fetchVenueById } from "@/services/venues";
+import type { VenueDetailsDto } from "@/services/venues.types";
 
 export default function useVenueDetails(id: number) {
     const [venueDetails, setVenueDetails] = useState<VenueDetailsDto | null>(null);
@@ -7,20 +8,28 @@ export default function useVenueDetails(id: number) {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!id) return;
+        if (!id) {
+            return;
+        }
         let alive = true;
         (async () => {
             try {
                 setLoading(true);
                 const data = await fetchVenueById(id);
-                if (!alive) return;
+                if (!alive) {
+                    return;
+                }
                 setVenueDetails(data);
                 setError(null);
             } catch (e: any) {
-                if (!alive) return;
+                if (!alive) {
+                    return;
+                }
                 setError(e?.response?.data?.message ?? 'Failed to load venue');
             } finally {
-                if (alive) setLoading(false);
+                if (alive) {
+                    setLoading(false);
+                }
             }
         })();
         return () => { alive = false; };

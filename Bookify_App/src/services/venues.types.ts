@@ -1,3 +1,7 @@
+import type { VenueType } from "@/constants/venueTypes"
+
+export type { VenueType } from "@/constants/venueTypes";
+
 export type AvailabilityStatus = "available" | "booked" | "booked_by_me" | "unknown";
 
 export type VenueCardDto = {
@@ -39,5 +43,3 @@ export type CreateVenuePayload = {
   startDate?: string;
   endDate?: string;
 };
-
-export type VenueType = 'studio' | 'apartment' | 'house' | 'villa';

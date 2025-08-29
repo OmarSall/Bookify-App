@@ -46,11 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Cross-tab auth state sync (e.g., logout in one tab logs out all)
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
-      if (event.key !== AUTH_SYNC_KEY) return;
-      // If another tab announced logout, clear local state here too
+      if (event.key !== AUTH_SYNC_KEY) {
+        return;
+      }
       if (event.newValue === "logged-out") {
         setUser(null);
       }
@@ -59,7 +59,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  // Register a global 401 handler for axios (logout + redirect to /login)
   useEffect(() => {
     const handler = async () => {
       await logout();
@@ -73,31 +72,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => register401Handler(null);
   }, [logout, navigate]);
 
-
   async function logout() {
     try {
       await apiLogout();
     } catch {
-      // Intentionally ignore network errors here; we still clear client state
     } finally {
-      // Clear in-memory user
       setUser(null);
 
-      // Clear any local/session storage that may hold app-specific flags
       try {
-        localStorage.removeItem("auth"); // if you ever used this key
+        localStorage.removeItem("auth");
         sessionStorage.removeItem("auth");
       } catch {
-        /* no-op */
       }
 
-      // Broadcast logout to other tabs
       try {
         localStorage.setItem(AUTH_SYNC_KEY, "logged-out");
-        // Optional: immediately remove to avoid cluttering storage history
         localStorage.removeItem(AUTH_SYNC_KEY);
       } catch {
-        /* no-op */
       }
     }
   }

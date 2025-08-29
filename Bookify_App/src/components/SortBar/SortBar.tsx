@@ -2,34 +2,18 @@ import styles from "./SortBar.module.css";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import ItemsPerPageSelector from "../ItemsPerPageSelector/ItemsPerPageSelector";
 import { useState } from "react";
-
-export type SortValue =
-  | "newest"
-  | "oldest"
-  | "price_asc"
-  | "price_desc"
-  | "rating_desc"
-  | "rating_asc"
-  | "capacity_desc"
-  | "capacity_asc";
-
+import {
+  SORT_OPTIONS,
+  SORT_LABELS,
+  ITEMS_PER_PAGE_OPTIONS,
+  type SortValue,
+} from "@/constants/sort";
 
 type SortBarProps = {
   venuesPerPage: number;
   onVenuesPerPageChange: (val: number) => void;
   sort: SortValue;
   onSortChange: (val: SortValue) => void;
-};
-
-const labels: Record<SortValue, string> = {
-  newest: "Newest",
-  oldest: "Oldest",
-  price_asc: "Price: low → high",
-  price_desc: "Price: high → low",
-  rating_desc: "Rating: high → low",
-  rating_asc: "Rating: low → high",
-  capacity_desc: "Capacity: high → low",
-  capacity_asc: "Capacity: low → high",
 };
 
 const SortBar = ({ venuesPerPage, onVenuesPerPageChange, sort, onSortChange }: SortBarProps) => {
@@ -46,7 +30,7 @@ const SortBar = ({ venuesPerPage, onVenuesPerPageChange, sort, onSortChange }: S
       <div className={styles.showCount}>
         <ItemsPerPageSelector
           value={venuesPerPage}
-          options={[12, 24, 36, 48]}
+          options={[...ITEMS_PER_PAGE_OPTIONS]}
           onChange={onVenuesPerPageChange}
         />
       </div>
@@ -57,23 +41,12 @@ const SortBar = ({ venuesPerPage, onVenuesPerPageChange, sort, onSortChange }: S
           className={styles.sortButton}
           onClick={(event) => setAnchor(event.currentTarget)}
         >
-          {labels[sort] ?? "sort"}
+          {SORT_LABELS[sort] ?? "Sort"}
         </Button>
         <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
-          {(
-            [
-              "newest",
-              "oldest",
-              "price_asc",
-              "price_desc",
-              "rating_desc",
-              "rating_asc",
-              "capacity_desc",
-              "capacity_asc",
-            ] as SortValue[]
-          ).map((opt) => (
-            <MenuItem key={opt} selected={opt === sort} onClick={() => handlePick(opt)}>
-              {labels[opt]}
+          {SORT_OPTIONS.map(({ value, label }) => (
+            <MenuItem key={value} selected={value === sort} onClick={() => handlePick(value)}>
+              {label}
             </MenuItem>
           ))}
         </Menu>

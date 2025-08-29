@@ -48,8 +48,8 @@ export default function BookingCard({ pricePerNight, venueId, onBooked }: Bookin
     return (
       <div className={styles.card}>
         <div className={styles.priceRow}>
-          <span className={styles.price}>{pricePerNight.toFixed(0)} zł</span>
-          <span className={styles.per}>/ doba</span>
+          <span className={styles.price}>{pricePerNight.toFixed(0)} PLN</span>
+          <span className={styles.per}>/ night</span>
         </div>
       </div>
     );
@@ -58,8 +58,8 @@ export default function BookingCard({ pricePerNight, venueId, onBooked }: Bookin
   return (
     <div className={styles.card}>
       <div className={styles.priceRow}>
-        <span className={styles.price}>{pricePerNight.toFixed(0)} zł</span>
-        <span className={styles.per}>/ doba</span>
+        <span className={styles.price}>{pricePerNight.toFixed(0)} PLN</span>
+        <span className={styles.per}>/ night</span>
       </div>
 
       <form onSubmit={onSubmit} className={styles.form} noValidate>

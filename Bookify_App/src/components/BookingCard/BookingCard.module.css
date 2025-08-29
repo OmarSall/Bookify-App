@@ -87,7 +87,6 @@
     box-shadow: none;
 }
 
-/* Podpowiedzi/komunikaty */
 .hint {
     font-size: 0.9rem;
     color: #6b7280;
@@ -111,7 +110,6 @@
 .link:hover {
     text-decoration: underline;
 }
-
 
 .title {
     font-weight: bold;

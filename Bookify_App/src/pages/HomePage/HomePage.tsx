@@ -2,17 +2,16 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./HomePage.module.css";
 import LinearProgress from "@mui/material/LinearProgress";
-
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FilterSidebar from "../../components/FilterSidebar/FilterSidebar";
-import SortBar, { SortValue } from "../../components/SortBar/SortBar";
+import SortBar from "../../components/SortBar/SortBar";
+import { type SortValue, SORT_TO_API } from "@/constants/sort";
 import VenueCard from "@/components/VenueCard";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
-
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
 import { useVenues } from "@/customHooks";
-import type { VenueType } from "@/services/venues.types";
+import { type VenueType, isVenueType } from "@/constants/venueTypes";
 
 const HomePage = () => {
   const [params] = useSearchParams();
@@ -32,31 +31,8 @@ const HomePage = () => {
   const [sort, setSort] = useState<SortValue>("newest");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
-  function isVenueType(x: unknown): x is VenueType {
-    return x === "studio" || x === "apartment" || x === "house" || x === "villa";
-  }
-
-  const sortApi = useMemo(() => {
-    switch (sort) {
-      case "price_asc":
-        return { sortBy: "price", sortDir: "asc" } as const;
-      case "price_desc":
-        return { sortBy: "price", sortDir: "desc" } as const;
-      case "rating_desc":
-        return { sortBy: "rating", sortDir: "desc" } as const;
-      case "rating_asc":
-        return { sortBy: "rating", sortDir: "asc" } as const;
-      case "capacity_desc":
-        return { sortBy: "capacity", sortDir: "desc" } as const;
-      case "capacity_asc":
-        return { sortBy: "capacity", sortDir: "asc" } as const;
-      case "oldest":
-        return { sortBy: "createdAt" as const, sortDir: "asc" as const };
-      case "newest":
-      default:
-        return { sortBy: "createdAt", sortDir: "desc" } as const;
-    }
-  }, [sort]);
+  const sortApi = useMemo(() =>
+    SORT_TO_API[sort], [sort]);
 
   const filters = useMemo(
     () => ({
