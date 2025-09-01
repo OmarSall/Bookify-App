@@ -1,46 +1,47 @@
 import styles from "./HeroSection.module.css";
-import { Box, Typography, Button, InputAdornment, Autocomplete, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  InputAdornment,
+} from "@mui/material";
 import TreeWithCouple from "../../assets/treeWithCouple.svg?react";
 import UpperOrnament from "../../assets/UpperOrnament.svg?react";
 import CustomInput from "../CustomInput";
 import CelebrationIcon from "@mui/icons-material/Celebration";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GuestsInput from "./GuestInput";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import LocationAutocomplete from "./LocationAutocomplete";
 import type { VenueType } from "@/services/venues.types";
 import TypeAutocomplete from "./TypeAutocomplete";
 import DateRangeInput from "./DateRangeInput";
 
+type HeroSectionProps = {
+  city: string;
+  type?: VenueType;
+  startDate: string;
+  endDate: string;
+  guests: number;
 
-const HeroSection = () => {
-  const [location, setLocation] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const [venueType, setVenueType] = useState<VenueType | "">("");
-  const [startDate, setStartDate] = useState<string | undefined>(undefined);
-  const [endDate, setEndDate] = useState<string | undefined>(undefined);
-  const [guests, setGuests] = useState<number>(0);
+  onCityChange: (val?: string) => void;
+  onTypeChange: (val?: VenueType) => void;
+  onStartDateChange: (val?: string) => void;
+  onEndDateChange: (val?: string) => void;
+  onGuestsChange: (val: number) => void;
+};
 
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (location && location.trim()) {
-      params.set("city", location.trim());
-    }
-    if (venueType) {
-      params.set("type", venueType);
-    }
-    if (startDate) {
-      params.set("startDate", startDate);
-    }
-    if (endDate) {
-      params.set("endDate", endDate);
-    }
-    if (guests && guests > 0) {
-      params.set("guests", String(guests));
-    }
-    navigate({ pathname: "/", search: params.toString() });
-  };
+const HeroSection = ({
+                       city,
+                       type,
+                       startDate,
+                       endDate,
+                       guests,
+                       onCityChange,
+                       onTypeChange,
+                       onStartDateChange,
+                       onEndDateChange,
+                       onGuestsChange,
+                     }: HeroSectionProps) => {
 
   return (
     <Box className={styles.hero}>
@@ -53,7 +54,6 @@ const HeroSection = () => {
         </div>
         <form onSubmit={(event) => {
           event.preventDefault();
-          handleSearch();
         }}>
           <Box className={styles.inputGroup}>
             <CustomInput
@@ -64,8 +64,8 @@ const HeroSection = () => {
                 startAdornment: (
                   <InputAdornment position="start">
                     <LocationAutocomplete
-                      value={location ?? ""}
-                      onChange={setLocation}
+                      value={city}
+                      onChange={(val) => onCityChange(val || undefined)}
                       placeholder="localization"
                     />
                   </InputAdornment>
@@ -90,13 +90,13 @@ const HeroSection = () => {
               start={startDate}
               end={endDate}
               onChange={(s, e) => {
-                setStartDate(s);
-                setEndDate(e);
+                onStartDateChange(s || undefined);
+                onEndDateChange(e || undefined);
               }}
               placeholder="date"
             />
 
-            <GuestsInput value={guests} onChange={setGuests} />
+            <GuestsInput value={guests} onChange={onGuestsChange} />
 
             <CustomInput
               name="venue"
@@ -107,8 +107,8 @@ const HeroSection = () => {
                   <InputAdornment position="start" sx={{ gap: 1 }}>
 
                     <TypeAutocomplete
-                      value={venueType}
-                      onChange={setVenueType}
+                      value={type ?? ""}
+                      onChange={(val) => onTypeChange((val as VenueType) || undefined)}
                       placeholder="venue type"
                     />
                   </InputAdornment>

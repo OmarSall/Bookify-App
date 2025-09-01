@@ -32,7 +32,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     (async () => {
       try {
         const currentUser = await me();
-        if (!alive) return;
+        if (!alive) {
+          return;
+        }
         setUser(currentUser);
       } catch {
         if (!alive) return;
