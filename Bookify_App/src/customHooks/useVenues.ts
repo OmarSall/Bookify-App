@@ -3,6 +3,7 @@ import { fetchVenues } from "@/services/venues";
 import { getMyFavouriteIds } from "@/services/favourites";
 import { useAuth } from "@/services/auth/AuthContext";
 import type { VenueCardDto, VenueType } from "@/services/venues.types";
+import usePriceDomain from "@/customHooks/usePriceDomain";
 
 type Filters = {
   city?: string;
@@ -41,6 +42,7 @@ export default function useVenues(
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const { priceDomain } = usePriceDomain();
 
   useEffect(() => {
     let isMounted = true;
@@ -139,5 +141,6 @@ export default function useVenues(
     availableFeatures,
     loading: isLoading,
     error: loadError,
+    priceDomain
   };
 }

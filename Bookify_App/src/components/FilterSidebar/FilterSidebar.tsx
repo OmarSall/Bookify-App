@@ -19,25 +19,32 @@ import {
 
 type FilterSidebarProps = {
   availableFeatures: string[];
-  priceRange: [number, number];
-  onPriceChange: (value: [number, number]) => void;
+  minPrice: number;
+  maxPrice: number;
+  priceRange: [number, number] | null;
+  onPriceChange: (value: [number, number] | null) => void;
   selectedFeatures: string[];
   onSelectedFeaturesChange: (value: string[]) => void;
 };
 
 const FilterSidebar = ({
                          availableFeatures,
+                         minPrice,
+                         maxPrice,
                          priceRange,
                          onPriceChange,
                          selectedFeatures,
                          onSelectedFeaturesChange,
                        }: FilterSidebarProps) => {
 
-  const [localRange, setLocalRange] = useState<[number, number]>(priceRange);
+  const [localRange, setLocalRange] = useState<[number, number]>([
+    minPrice,
+    maxPrice,
+  ]);
 
   useEffect(() => {
-    setLocalRange(priceRange);
-  }, [priceRange]);
+    setLocalRange(priceRange ?? [minPrice, maxPrice]);
+  }, [priceRange, minPrice, maxPrice]);
 
   const categorizedFeatures = useMemo(() => {
     const getByKeywords = (keywords: string[]) =>
@@ -72,7 +79,7 @@ const FilterSidebar = ({
 
   const handleReset = () => {
     onSelectedFeaturesChange([]);
-    onPriceChange([0, 1000]);
+    onPriceChange([minPrice, maxPrice]);
   };
 
   const renderCheckboxes = (features: string[]) =>
@@ -120,12 +127,12 @@ const FilterSidebar = ({
         </AccordionSummary>
         <AccordionDetails>
           <Slider
-            min={0}
-            max={1000}
+            min={minPrice}
+            max={maxPrice}
             value={localRange}
-            onChange={(_, newValue) => setLocalRange(newValue as [number, number]) }
+            onChange={(_, newValue) => setLocalRange(newValue as [number, number])}
             onChangeCommitted={(_, newValue) =>
-              onPriceChange(newValue as [number, number]) }
+              onPriceChange(newValue as [number, number])}
             valueLabelDisplay="on"
             disableSwap
           />

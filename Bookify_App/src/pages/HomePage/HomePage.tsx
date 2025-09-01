@@ -27,7 +27,7 @@ const HomePage = () => {
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const [venuesPerPage, setVenuesPerPage] = useState<number>(12);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
   const [sort, setSort] = useState<SortValue>("newest");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
@@ -38,8 +38,7 @@ const HomePage = () => {
     () => ({
       city,
       type,
-      priceMin: priceRange[0],
-      priceMax: priceRange[1],
+      ...(priceRange ? { priceMin: priceRange[0], priceMax: priceRange[1] } : {}),
       sortBy: sortApi.sortBy,
       sortDir: sortApi.sortDir,
       features: selectedFeatures,
@@ -52,7 +51,7 @@ const HomePage = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [city, selectedFeatures, priceRange, sortApi, startDate, endDate, guests]);
+  }, [city, type, selectedFeatures, priceRange, sortApi, startDate, endDate, guests]);
 
   const {
     venues,
@@ -60,6 +59,7 @@ const HomePage = () => {
     availableFeatures,
     loading,
     error,
+    priceDomain,
   } = useVenues(page, venuesPerPage, filters);
 
   const handleCardClick = (venueId: number) => {
@@ -75,11 +75,13 @@ const HomePage = () => {
           <Box className={styles.mainContent}>
             <div className={styles.layout}>
               <aside className={styles.sidebarArea}>
-                {!loading && venues.length > 0 && (
+                {!loading && venues.length > 0 && priceDomain && (
                   <FilterSidebar
                     availableFeatures={availableFeatures}
+                    minPrice={priceDomain.min}
+                    maxPrice={priceDomain.max}
                     priceRange={priceRange}
-                    onPriceChange={(range) => setPriceRange([range[0], range[1]])}
+                    onPriceChange={setPriceRange}
                     selectedFeatures={selectedFeatures}
                     onSelectedFeaturesChange={(next) => setSelectedFeatures(next)}
                   />

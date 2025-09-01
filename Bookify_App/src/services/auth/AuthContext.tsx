@@ -38,7 +38,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!alive) return;
         setUser(null);
       } finally {
-        if (alive) setLoading(false);
+        if (alive) {
+          setLoading(false);
+        }
       }
     })();
     return () => {
