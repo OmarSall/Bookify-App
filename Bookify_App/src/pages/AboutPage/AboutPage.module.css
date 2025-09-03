@@ -1,0 +1,16 @@
+.wrapper {
+    max-width: 920px;
+    margin: 48px auto;
+    padding: 0 24px;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #333;
+}

@@ -14,3 +14,9 @@
     color: #aaa;
     font-size: 0.9rem;
 }
+
+.value {
+    color: #333;
+    font-size: 0.95rem;
+    font-weight: 500;
+}

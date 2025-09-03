@@ -1,85 +1,146 @@
-import {useEffect, useState, useMemo} from "react";
-import axios from "axios";
-import {API_BASE_URL, ENDPOINTS} from "../constants/api";
+import { useEffect, useMemo, useState } from "react";
+import { fetchVenues } from "@/services/venues";
+import { getMyFavouriteIds } from "@/services/favourites";
+import { useAuth } from "@/services/auth/AuthContext";
+import type { VenueCardDto, VenueType } from "@/services/venues.types";
+import usePriceDomain from "@/customHooks/usePriceDomain";
 
-export interface Venue {
-    id: number;
-    name: string;
-    rating: number;
-    capacity: number;
-    pricePerNightInEUR: number;
-    location: {
-        name: string;
-        postalCode: string;
-    };
-    albumId: number;
-    features: string[];
-}
-
-const useVenues = (page: number, limit: number) => {
-    const [venues, setVenues] = useState<Venue[]>([]);
-    const [totalCount, setTotalCount] = useState<number>(0);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchVenues = async () => {
-            setLoading(true);
-            try {
-                console.log("📡 Fetching venues with:", {page, limit});
-
-                const res = await axios.get(`${API_BASE_URL}${ENDPOINTS.VENUES}`, {
-                    params: {
-                        _page: page,
-                        _per_page: limit,
-                        _sort: "id",
-                        _order: "asc",
-                    },
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
-
-                console.log("🧾 API raw response:", res);
-
-                const rawVenues = Array.isArray(res.data) ? res.data : res.data?.data;
-
-                const normalizedData: Venue[] = rawVenues.map((v: any, index: number) => {
-                    const convertedId = Number(v.id);
-                    console.log(`✅ [${index}] id before: ${typeof v.id}, after: ${typeof convertedId}`);
-                    return {
-                        ...v,
-                        id: convertedId,
-                    };
-                });
-
-                setVenues(normalizedData);
-
-                const totalCount =
-                    res.data?.meta?.pagination?.total ??
-                    Number(res.headers["x-total-count"]) ??
-                    normalizedData.length;
-
-                setTotalCount(totalCount);
-                console.log("📊 Total count:", totalCount);
-            } catch (err) {
-                console.error("❌ Failed to fetch venues", err);
-                setError("Failed to fetch venues");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        void fetchVenues();
-    }, [page, limit]);
-
-    const availableFeatures = useMemo(() => {
-        if (!venues.length) return [];
-        const features = venues.flatMap((venue) => venue.features || []);
-        return Array.from(new Set(features));
-    }, [venues]);
-
-    return {venues, totalCount, availableFeatures, loading, error};
+type Filters = {
+  city?: string;
+  type?: VenueType;
+  priceMin?: number;
+  priceMax?: number;
+  sortBy?: "price" | "rating" | "capacity" | "createdAt" | "title";
+  sortDir?: "asc" | "desc";
+  features?: string[];
+  startDate?: string; // YYYY-MM-DD
+  endDate?: string;   // YYYY-MM-DD
+  guests?: number;
 };
 
-export default useVenues;
+function normalizeFeatures(rawFeaturesInput: any): string[] {
+  if (Array.isArray(rawFeaturesInput) && rawFeaturesInput.every((entry) => typeof entry === "string")) {
+    return rawFeaturesInput as string[];
+  }
+  if (Array.isArray(rawFeaturesInput) && rawFeaturesInput.length && typeof rawFeaturesInput[0] === "object") {
+    return rawFeaturesInput.map((featureObj: any) => featureObj?.name).filter(Boolean);
+  }
+  if (Array.isArray(rawFeaturesInput?.venueFeatures)) {
+    return rawFeaturesInput.venueFeatures.map((venueFeature: any) => venueFeature?.feature?.name).filter(Boolean);
+  }
+
+  return [];
+}
+
+export default function useVenues(
+  page: number,
+  perPage: number,
+  filters: Filters = {},
+) {
+  const { user } = useAuth();
+  const [venueItems, setVenueItems] = useState<VenueCardDto[]>([]);
+  const [totalItemsCount, setTotalItemsCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const { priceDomain } = usePriceDomain();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    (async () => {
+      try {
+        setIsLoading(true);
+
+        const [listResp, favouriteIds] = await Promise.all([
+          fetchVenues({
+            city: filters.city,
+            type: filters.type,
+            page,
+            perPage,
+            priceMin: filters.priceMin,
+            priceMax: filters.priceMax,
+            sortBy: filters.sortBy,
+            sortDir: filters.sortDir,
+            features: filters.features,
+            startDate: filters.startDate,
+            endDate: filters.endDate,
+            guests: filters.guests,
+          }),
+          user ? getMyFavouriteIds().catch(() => []) : Promise.resolve<number[]>([]),
+        ]);
+
+        if (!isMounted) {
+          return;
+        }
+        const favouriteIdSet = new Set<number>(favouriteIds ?? []);
+        const normalizedItems = (listResp.items ?? []).map((venue: any) => ({
+          ...venue,
+          features: normalizeFeatures(
+            (venue as any).features ?? (venue as any).venueFeatures ?? [],
+          ),
+          isFavourite: favouriteIdSet.has(venue.id),
+        }));
+
+        setVenueItems(normalizedItems as VenueCardDto[]);
+        setTotalItemsCount(Number(listResp.totalCount ?? normalizedItems.length));
+        setLoadError(null);
+      } catch (errorCaught: any) {
+        if (!isMounted) {
+          return;
+        }
+        console.error("useVenues error:", errorCaught?.response ?? errorCaught);
+        setLoadError(errorCaught?.response?.data?.message ?? "Failed to load venues");
+        setVenueItems([]);
+        setTotalItemsCount(0);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    page,
+    perPage,
+    filters?.city,
+    filters.priceMin,
+    filters.priceMax,
+    filters.sortBy,
+    filters.sortDir,
+    user?.id,
+    filters.features,
+    filters.type,
+    filters.startDate,
+    filters.endDate,
+    filters.guests,
+  ]);
+
+  const availableFeatures = useMemo(() => {
+    const uniqueFeaturesSet = new Set<string>();
+
+    for (const venue of venueItems) {
+      const featuresArray = Array.isArray(venue.features) ? venue.features : [];
+      for (const featureName of featuresArray) {
+        uniqueFeaturesSet.add(featureName);
+      }
+    }
+
+    return Array.from(uniqueFeaturesSet).sort(
+      (firstFeature, secondFeature) => firstFeature.localeCompare(secondFeature),
+    );
+  }, [venueItems]);
+
+  const venues = venueItems;
+
+  return {
+    venues,
+    totalCount: totalItemsCount,
+    availableFeatures,
+    loading: isLoading,
+    error: loadError,
+    priceDomain
+  };
+}

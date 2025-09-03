@@ -1,0 +1,46 @@
+.wrapper {
+    width: 200px;
+    min-width: 180px;
+}
+
+.textField {
+    background-color: #fff;
+    border-radius: 999px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.textField :global(.MuiOutlinedInput-root) {
+    border-radius: 999px;
+    height: 42px;
+    padding-left: 6px;
+}
+
+.textField :global(.MuiOutlinedInput-notchedOutline) {
+    border: none;
+}
+
+.textField :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+    border: none;
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border: none;
+}
+
+.textField :global(input) {
+    outline: none;
+    color: #8e8e8e;
+}
+
+.textField :global(input::placeholder),
+.textField :global(.MuiInputBase-input::placeholder) {
+    color: #b8b8b8;
+    opacity: 1;
+}
+
+.popperPaper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+}
