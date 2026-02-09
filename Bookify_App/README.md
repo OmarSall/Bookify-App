@@ -1,4 +1,4 @@
-# Bookify — Frontend
+# Bookify - Frontend
 
 **Bookify** is a modern front-end web application built with **React 19 and TypeScript**, designed for browsing venues and managing bookings through a clean and intuitive user interface.
 
