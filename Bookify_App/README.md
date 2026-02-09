@@ -1,12 +1,41 @@
-# React + Vite
+# Bookify — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Bookify** is a modern front-end web application built with **React 19 and TypeScript**, designed for browsing venues and managing bookings through a clean and intuitive user interface.
 
-Currently, two official plugins are available:
+The application follows a component-driven architecture and integrates map-based views, advanced filtering, and protected user flows.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
 
-## Expanding the ESLint configuration
+- Venue listing with filtering, sorting, and pagination
+- Detailed venue pages with image galleries, booking cards, and location maps
+- Authentication flow (login and sign-up)
+- Protected user areas (bookings, favourites, hosting)
+- Responsive layout built with reusable UI components
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- React 19 + TypeScript
+- Vite (development environment)
+- Material UI (MUI)
+- React Router
+- Axios
+- Leaflet / Google Maps API
+- react-date-range
+
+## Architecture Highlights
+
+- Clear separation between pages, reusable components, and API services
+- Centralized authentication handled via React Context
+- Protected routes implemented with a dedicated authorization wrapper
+- Custom hooks used to encapsulate business logic and side effects
+
+## Getting Started (Development)
+
+```bash
+npm install
+```
+```bash
+npm run dev
+```
+
+The application requires a configured backend API provided via environment variables.
